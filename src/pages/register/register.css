@@ -1,0 +1,14 @@
+.register-btn,
+.google-btn {
+    transition: 0.1s ease;
+}
+
+.register-btn:active,
+.google-btn:active {
+    color: rgba(255, 255, 255, 0.1);
+    transform: scale(0.95);
+}
+
+.expand-input {
+    transform: translateX(2px);
+}

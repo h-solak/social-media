@@ -1,0 +1,55 @@
+.sidebar {
+    height: calc(100vh - 60px);
+    overflow-y: scroll;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 7px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 36px;
+}
+
+.sidebar-col,
+.sidebar-friend-col {
+    transition: 0.1s ease;
+}
+
+.sidebar-col:hover,
+.sidebar-friend-col:hover {
+    background-color: rgba(110, 110, 110, 0.1);
+}
+
+.sidebar-col:active,
+.sidebar-friend:active {
+    background-color: rgba(110, 110, 110, 0.2);
+}
+
+.sidebar-item,
+.sidebar-friend {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 16px;
+    padding: 12px 24px;
+    cursor: pointer;
+}
+
+.sidebar-friend {
+    gap: 12px
+}
+
+.sidebar-friend-col {
+    transition: 0.1s ease;
+}
+
+.sidebar-more-opt {
+    padding: 12px 24px;
+    cursor: pointer;
+}

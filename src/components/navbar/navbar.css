@@ -1,0 +1,54 @@
+.navbar-container {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    min-height: 60px;
+    max-height: 60px;
+    background-color: #395144;
+    z-index: 99;
+    /*If there is something more important, I am going to make its z-index 999*/
+}
+
+.nav-icon {
+    cursor: pointer;
+    transition: 0.1s ease;
+}
+
+.nav-icon:hover {
+    color: #AA8B56;
+}
+
+.nav-icon:active {
+    color: #F0EBCE;
+}
+
+.navbar-profile-pic {}
+
+.navbar-profile-pic:hover {
+    opacity: 0.9;
+}
+
+.navbar-dropdown-container {
+    position: relative;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: "12px";
+    align-items: center;
+}
+
+.navbar-dropdown {
+    display: none;
+    position: absolute;
+    z-index: 9999;
+    flex-direction: column;
+    gap: "4px";
+    padding: 12px;
+    border-radius: 0px 0px 12px 12px;
+    background-color: "#fff";
+}
+
+.navbar-profile-pic:hover+.navbar-dropdown,
+.navbar-dropdown:hover {
+    display: flex;
+}

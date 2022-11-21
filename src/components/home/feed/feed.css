@@ -1,0 +1,25 @@
+/*Share*/
+
+.share-option,
+.post-option {
+    transition: 0.1s ease;
+}
+
+.share-option:hover,
+.post-option:hover,
+.post-more-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.share-btn {
+    transition: 0.1s ease;
+}
+
+.share-btn:active {
+    color: rgba(255, 255, 255, 0.1);
+    transform: scale(0.95);
+}
+
+.post-more-btn:active {
+    background-color: rgba(0, 0, 0, 0.2);
+}

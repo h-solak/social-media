@@ -1,0 +1,44 @@
+.profile-top {
+    max-height: 50vh;
+}
+
+.user-profile-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: "0px";
+    cursor: pointer;
+    padding: 4px 16px;
+    border-radius: 16px;
+}
+
+.user-profile-stats:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.changeable-profile-pic {
+    position: relative;
+}
+
+.change-profile-pic {
+    position: absolute;
+    display: none;
+    cursor: pointer;
+}
+
+.changeable-profile-pic:hover+.change-profile-pic,
+.change-profile-pic:hover {
+    display: flex;
+}
+
+.change-profile-pic>div {
+    background-color: #cfd1d1;
+}
+
+.change-profile-pic:active .cam-icon-wrapper {
+    background-color: #b7b7b7;
+}
+
+.profile-rightbar {
+    max-height: 40vh;
+}

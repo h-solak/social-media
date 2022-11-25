@@ -11,13 +11,13 @@ const Home = () => {
   return (
     <Col xs="12" sm="12" className="home-container p-0 m-0">
       <Row className="m-0 p-0 justify-content-start h-100">
-        <Col sm="" md="3" className="d-none d-md-block p-0">
+        <Col xs="0" sm="3" md="3" className="d-none d-sm-block p-0">
           <Sidebar />
         </Col>
-        <Col sm="12" md="6" className="p-0">
+        <Col xs="12" sm="9" md="6" className="p-0">
           <Feed />
         </Col>
-        <Col md="3" className="d-none d-md-block p-0">
+        <Col sm="0" md="3" className="d-none d-md-block p-0">
           <RightBar />
         </Col>
       </Row>

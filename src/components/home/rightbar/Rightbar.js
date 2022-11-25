@@ -7,20 +7,13 @@ import { MdNotifications, MdChat } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 const Rightbar = () => {
+  const navigate = useNavigate();
   const onlineFriends = [
     "Hasan Solak",
     "Charles LökLök",
     "Serhio Periz",
     "Meks Ferstapen",
     "Lan Strol",
-    "Tırın Tırın Tırınının",
-    "Can Afacan Şaklaban",
-    "Hehehe",
-    "Br",
-    "Sji",
-    "Sji",
-    "Sji",
-    "Sji",
   ];
   return (
     <div
@@ -29,11 +22,14 @@ const Rightbar = () => {
     >
       {onlineFriends?.length > 0 ? (
         <>
-          <div className="text-secondary pt-3" style={{ padding: "8px 20px" }}>
-            Online Friends
+          <div
+            className="text-secondary pt-3 fs-7"
+            style={{ padding: "8px 20px" }}
+          >
+            Suggestions For You
           </div>
           {onlineFriends?.map((friend, index) => (
-            <button
+            <div
               key={index}
               className="w-100 p-0 rightbar-friend-col rounded-2"
             >
@@ -41,25 +37,27 @@ const Rightbar = () => {
                 <div>
                   <img
                     src={
-                      index % 2 === 0
-                        ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_EDUQgxKx6lHhz0OoU2LGsO-6Lg_YyjyU7Q&usqp=CAU"
-                        : "https://i.pinimg.com/736x/9f/55/39/9f5539be3ffa77b7a7bc09c4bfcccd8d.jpg"
+                      process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"
                     }
-                    alt="User Profile"
+                    alt="user profile"
                     width={38}
                     height={38}
-                    className="online-friend-pic rounded-circle"
+                    className="rounded-circle me-2 object-fit-cover"
                   />
-                  <div
-                    className="friend-online-status"
-                    style={{ backgroundColor: "rgb(63, 252, 63)" }}
-                  ></div>
                 </div>
-                <span className="text-start">{friend}</span>
+                <p className="m-0 fs-7 text-start me-1">
+                  <span onClick={() => navigate("b")}>{friend}</span>{" "}
+                </p>
+                <button
+                  className="display-sm-md color-bronze fs-8 hvr-underline fw-600"
+                  onClick={() => navigate("a")}
+                >
+                  follow
+                </button>
               </div>
-            </button>
+            </div>
           ))}
-          <a className="rightbar-friend">
+          <a className="rightbar-friend fs-7">
             <span>See More...</span>
           </a>
         </>

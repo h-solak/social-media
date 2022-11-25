@@ -4,12 +4,44 @@ import { Row, Col } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useDispatch } from "react-redux";
-import { registerUser } from "../../redux/slices/auth/registerSlice";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser, resetRegistered } from "../../redux/slices/authSlice";
+import { BiError } from "react-icons/bi";
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isFocusedOn, setIsFocusedOn] = useState(0);
+  const isRegistered = useSelector((state) => state.auth.isRegistered);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (isRegistered.length >= 3) {
+        //is successfull
+        navigate("/login");
+        dispatch(resetRegistered());
+      }
+    }, 0);
+  }, [isRegistered]);
+
+  const requiredError = (text) => (
+    <p className="m-0 d-flex align-items-bottom w-100 text-start text-danger fs-7 fw-bold">
+      <BiError className="fs-5 p-0" /> {text}
+    </p>
+  );
+  const RegisterSchema = Yup.object().shape({
+    email: Yup.string()
+      .email(requiredError("Invalid email"))
+      .required(requiredError("This field is required")),
+    username: Yup.string()
+      .min(3, requiredError("Your username is too short"))
+      .max(20, requiredError("Your username is too long"))
+      .required(requiredError("This field is required")),
+    password: Yup.string()
+      .min(6, requiredError("Your password is too short"))
+      .max(15, requiredError("Your password is too long"))
+      .required(requiredError("This field is required")),
+  });
 
   return (
     <Row className="m-0 p-0 text-center">
@@ -40,23 +72,23 @@ const Register = () => {
 
       <Formik
         initialValues={{ email: "", username: "", password: "" }}
-        validate={(values) => {
-          const errors = {};
-          if (!values.email) {
-            errors.email = (
-              <span className="w-100 text-danger fs-7 fw-600 my-1 border-top flex-fade-out-3s">
-                This Field Is Required
-              </span>
-            );
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            errors.email = "Invalid email address";
-          }
-          return errors;
-        }}
+        validationSchema={RegisterSchema}
+        // validate={(values) => {
+        //   const errors = {};
+        //   if (!values.email) {
+        //     errors.email = (
+        //       <p className="m-0 d-flex align-items-center w-100 text-start text-danger fs-7 fw-bold">
+        //         <BiError className="fs-5" /> This Field Is Required
+        //       </p>
+        //     );
+        //   } else if (
+        //     !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+        //   ) {
+        //     errors.email = "Invalid email address";
+        //   }
+        //   return errors;
+        // }}
         onSubmit={(values, { setSubmitting, resetForm }) => {
-          console.log(values);
           dispatch(
             registerUser({
               email: values.email,
@@ -78,97 +110,98 @@ const Register = () => {
           isSubmitting,
           /* and other goodies */
         }) => (
-          <Col sm="12" md="5" className="p-0 h-100">
-            <form
-              onSubmit={handleSubmit}
-              className="w-100 p-0 bg-white px-2 px-md-5 h-100 flex-center flex-column"
+          <Col
+            sm="12"
+            md="5"
+            className="p-0 bg-white px-2 px-md-5 h-100 flex-center flex-column h-100"
+            tag="form"
+            onSubmit={handleSubmit}
+          >
+            <div className="w-100 fs-3 fw-bold mt-3">
+              Sign Up to SociableCat
+            </div>
+            <div className="w-100 mt-1">
+              <span className="fs-7 text-secondary">
+                Do you have an account?{" "}
+              </span>
+              <span
+                className="fs-7 hvr-underline color-bronze fw-600 pointer"
+                onClick={() => navigate("/login")}
+              >
+                Login
+              </span>
+            </div>
+            <div className="w-100 p-0 m-0 mt-5 d-flex justify-content-center">
+              <div className="w-75 p-0 d-flex flex-column align-items-start mt-1">
+                <span className="fw-600">Email</span>
+                <input
+                  type="email"
+                  name="email"
+                  value={values.email}
+                  onChange={handleChange}
+                  className={`w-100 d-flex justify-content-center register-input p-2 bg-color-white rounded-3 border ${
+                    isFocusedOn === 1 && "expand-input"
+                  }`}
+                  onFocus={() => setIsFocusedOn(1)}
+                  onBlur={() => setIsFocusedOn(0)}
+                  placeholder="name@example.com"
+                />
+                {errors.email && touched.email && errors.email}
+              </div>
+            </div>
+
+            <div className="w-100 p-0 m-0 mt-3 d-flex justify-content-center">
+              <div className="w-75 p-0 d-flex flex-column align-items-start mt-1">
+                <span className="fw-600">Username</span>
+                <input
+                  type="text"
+                  name="username"
+                  value={values.username}
+                  onChange={handleChange}
+                  className={`w-100 d-flex justify-content-center register-input p-2 bg-color-white rounded-3 border ${
+                    isFocusedOn === 2 && "expand-input"
+                  }`}
+                  onFocus={() => setIsFocusedOn(2)}
+                  onBlur={() => setIsFocusedOn(0)}
+                  placeholder="Be creative just like 'CatBoi_69'"
+                />
+                {errors.username && touched.username && errors.username}
+              </div>
+            </div>
+
+            <div className="w-100 p-0 m-0 mt-3 d-flex justify-content-center">
+              <div className="w-75 p-0 d-flex flex-column align-items-start mt-1">
+                <span className="fw-600">Password</span>
+                <input
+                  type="password"
+                  name="password"
+                  value={values.password}
+                  onChange={handleChange}
+                  className={`w-100 d-flex justify-content-center register-input p-2 bg-color-white rounded-3 border ${
+                    isFocusedOn === 3 && "expand-input"
+                  }`}
+                  onFocus={() => setIsFocusedOn(3)}
+                  onBlur={() => setIsFocusedOn(0)}
+                  placeholder="+6 Characters"
+                />
+                {errors.password && touched.password && errors.password}
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-75 register-btn py-2 border-0 color-white rounded-2 bg-color-green mt-5"
             >
-              <div className="w-100 fs-3 fw-bold mt-3">
-                Sign Up to SociableCat
-              </div>
-              <div className="w-100 mt-1">
-                <span className="fs-7 text-secondary">
-                  Do you have an account?{" "}
-                </span>
-                <span
-                  className="fs-7 hvr-underline color-bronze fw-600 pointer"
-                  onClick={() => navigate("/login")}
-                >
-                  Login
-                </span>
-              </div>
-              <div className="w-100 p-0 m-0 mt-5 d-flex justify-content-center">
-                <div className="w-75 p-0 d-flex flex-column align-items-start mt-1">
-                  <span className="fw-600">Email</span>
-                  <input
-                    type="email"
-                    name="email"
-                    value={values.email}
-                    onChange={handleChange}
-                    className={`w-100 d-flex justify-content-center register-input p-2 bg-color-white rounded-3 border ${
-                      isFocusedOn === 1 && "expand-input"
-                    }`}
-                    onFocus={() => setIsFocusedOn(1)}
-                    onBlur={() => setIsFocusedOn(0)}
-                    placeholder="name@example.com"
-                  />
-                  {errors.email && touched.email && errors.email}
-                </div>
-              </div>
-
-              <div className="w-100 p-0 m-0 mt-3 d-flex justify-content-center">
-                <div className="w-75 p-0 d-flex flex-column align-items-start mt-1">
-                  <span className="fw-600">Username</span>
-                  <input
-                    type="text"
-                    name="username"
-                    value={values.username}
-                    onChange={handleChange}
-                    className={`w-100 d-flex justify-content-center register-input p-2 bg-color-white rounded-3 border ${
-                      isFocusedOn === 2 && "expand-input"
-                    }`}
-                    onFocus={() => setIsFocusedOn(2)}
-                    onBlur={() => setIsFocusedOn(0)}
-                    placeholder="Be creative just like 'CatBoi_69'"
-                  />
-                  {errors.username && touched.username && errors.username}
-                </div>
-              </div>
-
-              <div className="w-100 p-0 m-0 mt-3 d-flex justify-content-center">
-                <div className="w-75 p-0 d-flex flex-column align-items-start mt-1">
-                  <span className="fw-600">Password</span>
-                  <input
-                    type="password"
-                    name="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    className={`w-100 d-flex justify-content-center register-input p-2 bg-color-white rounded-3 border ${
-                      isFocusedOn === 3 && "expand-input"
-                    }`}
-                    onFocus={() => setIsFocusedOn(3)}
-                    onBlur={() => setIsFocusedOn(0)}
-                    placeholder="+6 Characters"
-                  />
-                  {errors.password && touched.password && errors.password}
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-75 register-btn py-2 border-0 color-white rounded-2 bg-color-green mt-5"
-              >
-                Create an Account
-              </button>
-              <button
-                className="w-75 py-2 text-dark border rounded-2 bg-color- mt-4"
-                disabled
-                title="Coming soon!"
-              >
-                <FcGoogle className="fs-4 rounded-circle" /> Sign up with Google
-              </button>
-            </form>
+              Create an Account
+            </button>
+            <button
+              className="w-75 py-2 text-dark border rounded-2 bg-color- mt-4"
+              disabled
+              title="Coming soon!"
+            >
+              <FcGoogle className="fs-4 rounded-circle" /> Sign up with Google
+            </button>
           </Col>
         )}
       </Formik>

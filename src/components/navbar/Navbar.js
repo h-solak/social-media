@@ -14,9 +14,11 @@ import { GiCat } from "react-icons/gi";
 import { FaRegUserCircle, FaSearch, FaUserFriends } from "react-icons/fa";
 import { MdNotifications, MdChat } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
   const [isFocused, setIsFocused] = useState(false);
   return (
     <Col xs="12" sm="12" className="navbar-container px-4">
@@ -86,12 +88,12 @@ const Navbar = () => {
           <MdNotifications className="d-none d-md-block fs-3 color-white nav-icon" />
           <div className="nav-dropdown">
             <img
-              src="https://pbs.twimg.com/media/FELTyBKXsA0JxeD?format=jpg&name=small"
-              alt="User"
+              src={process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"}
+              alt="user profile"
               width={42}
               height={42}
-              className="navbar-profile-pic fs-2 pointer rounded-circle"
-              onClick={() => navigate("/profile")}
+              className="navbar-profile-pic fs-2 pointer rounded-circle object-fit-cover"
+              onClick={() => navigate("/profile/" + user?._id)}
             />
           </div>
         </Col>

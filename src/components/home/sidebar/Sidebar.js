@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./sidebar.css";
 import { Row, Col, Input } from "reactstrap";
 import { GiCat } from "react-icons/gi";
@@ -11,9 +11,11 @@ import {
   MdPerson,
 } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
   const friends = [
     "Hasan Solak",
     "Charles LökLök",
@@ -54,7 +56,7 @@ const Sidebar = () => {
       </button>
       <button
         className="w-100 p-0 mb-3 sidebar-col"
-        onClick={() => navigate("/profile")}
+        onClick={() => navigate("/profile/" + user?._id)}
       >
         <div className="sidebar-item">
           <MdPerson className="fs-4" />
@@ -74,15 +76,19 @@ const Sidebar = () => {
               <div className="sidebar-friend">
                 <img
                   src={
-                    index % 2 === 0
-                      ? "https://64.media.tumblr.com/b20bb85bb940bed0622a0ddba3a9a58d/de443792292e6eb6-cf/s1280x1920/77ec6205df077c9d335afe1920fe81639720c877.jpg"
-                      : "https://images.news18.com/ibnlive/uploads/2021/12/lewis-hamilton-formula-1.jpg"
+                    process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"
                   }
-                  alt="User Profile"
+                  alt="user profile"
                   width={38}
                   height={38}
-                  className="rounded-circle"
+                  className="online-friend-pic rounded-circle object-fit-cover"
                 />
+                {index < 3 && (
+                  <div
+                    className="friend-online-status"
+                    style={{ backgroundColor: "rgb(63, 252, 63)" }}
+                  ></div>
+                )}
                 <span>{friend}</span>
               </div>
             </button>

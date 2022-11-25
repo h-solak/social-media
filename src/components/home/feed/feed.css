@@ -23,3 +23,14 @@
 .post-more-btn:active {
     background-color: rgba(0, 0, 0, 0.2);
 }
+
+.w-75-100 {
+    width: 75%;
+}
+
+@media only screen and (max-width: 1200px) {
+    .w-75-100 {
+        width: 100%;
+        padding: 0px 32px;
+    }
+}

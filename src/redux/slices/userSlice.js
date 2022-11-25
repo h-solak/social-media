@@ -6,18 +6,31 @@ import errorToast from "../../helpers/errorToast";
 import { TiUserAdd, TiUserDelete } from "react-icons/ti";
 
 /* USER THAT LOGGED IN */
-export const fetchUser = createAsyncThunk("users/fetchUser", async (data) => {
-  try {
-    const res = await axios.get(
-      `http://localhost:8800/api/users/${data?.userId}`
-    );
-    console.log(res.data);
-    return res.data.data;
-  } catch (err) {
-    // custom error
-    console.log(err.response.data);
+// export const fetchUser = createAsyncThunk("users/fetchUser", async (data) => {
+//   try {
+//     const res = await axios.get(
+//       `http://localhost:8800/api/users/${data?.userId}`
+//     );
+//     return res.data.data;
+//   } catch (err) {
+//     // custom error
+//   }
+// });
+
+/* USER THAT LOGGED IN */
+export const fetchProfile = createAsyncThunk(
+  "users/fetchProfile",
+  async (data) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:8800/api/users/${data?.userId}`
+      );
+      return res.data.data;
+    } catch (err) {
+      // custom error
+    }
   }
-});
+);
 
 export const followUser = createAsyncThunk("users/followUser", async (data) => {
   const res = await axios
@@ -27,10 +40,7 @@ export const followUser = createAsyncThunk("users/followUser", async (data) => {
     .catch((err) => {
       if (err.response) {
         //server responded with a status code
-        errorToast(
-          err.response.data.desc || "Something went wrong!",
-          "bottom-center"
-        );
+        errorToast(err.response.data.desc || "Something went wrong!");
       } else if (err.request) {
         //no response receieved
         errorToast("Something went wrong!");
@@ -53,10 +63,7 @@ export const unfollowUser = createAsyncThunk(
       .catch((err) => {
         if (err.response) {
           //server responded with a status code
-          errorToast(
-            err.response.data.desc || "Something went wrong!",
-            "bottom-center"
-          );
+          errorToast(err.response.data.desc || "Something went wrong!");
         } else if (err.request) {
           //no response receieved
           errorToast("Something went wrong!");
@@ -76,6 +83,7 @@ export const userSlice = createSlice({
   name: "user",
   initialState: {
     user: {},
+    crrProfile: {},
     loading: false,
     error: "",
     choosenUserInfo: {},
@@ -90,22 +98,11 @@ export const userSlice = createSlice({
   //   },
   // },
   extraReducers: (builder) => {
-    // builder.addCase(fetchUser.pending, (state) => {
-    //   state.loading = true;
-    // });
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
-      state.user = action.payload;
-      // state.loading = false;
-      // state.error = "";
+    builder.addCase(fetchProfile.fulfilled, (state, action) => {
+      state.crrProfile = action.payload;
     });
-    // builder.addCase(fetchUser.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.user = [];
-    //   state.error = action.error.message;
-    // });
-
-    builder.addCase(followUser.fulfilled, (state, action) => {});
-    builder.addCase(unfollowUser.fulfilled, (state, action) => {});
+    // builder.addCase(followUser.fulfilled, (state, action) => {});
+    // builder.addCase(unfollowUser.fulfilled, (state, action) => {});
   },
 });
 

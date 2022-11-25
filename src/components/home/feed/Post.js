@@ -37,25 +37,40 @@ const Post = () => {
       style={{ borderRadius: "12px 12px 12px 12px" }}
     >
       <div className="flex-between p-2 px-3">
-        <div className="flex-align-center gap-1">
-          <img
-            src={process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"}
-            alt="user profile"
-            width={45}
-            height={45}
-            className="rounded-circle"
-          />
-          <div className="d-flex align-items-start flex-column px-2">
-            <span className="fs-7 fw-600 default">Charles Leclerc</span>
-            <span className="fs-8 text-secondary default">5 hours ago</span>
+        <div className="d-flex align-items-start flex-column">
+          <div className="w-100 flex-between">
+            <div className="flex-align-center gap-1">
+              <img
+                src={process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"}
+                alt="user profile"
+                width={45}
+                height={45}
+                className="rounded-circle"
+              />
+              <div className="d-flex align-items-start flex-column px-2">
+                <p className="m-0 fs-7 fw-600 default">
+                  Charles Leclerc
+                  <button className="fs-8 fw-bold text-secondary hvr-underline">
+                    following
+                  </button>
+                </p>
+                <span className="fs-8 text-secondary default">5 hours ago</span>
+              </div>
+            </div>
+            <button className="post-more-btn p-1 rounded-circle flex-center">
+              <MdMoreVert className="fs-4" />
+            </button>
           </div>
+          <p className="m-0 mt-3">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste
+            laborum consequuntur repellat tempore dolor! Placeat ab
+            reprehenderit praesentium dolore doloremque? Voluptas maxime illum
+            non. Quam quia placeat a cupiditate aut.
+          </p>
         </div>
-        <button className="post-more-btn p-1 rounded-circle flex-center">
-          <MdMoreVert className="fs-4" />
-        </button>
       </div>
       <img
-        src="https://cdn-1.motorsport.com/images/amp/6VRJjgw6/s1000/charles-leclerc-ferrari-f1-75-.jpg"
+        src="https://images.pexels.com/photos/4509131/pexels-photo-4509131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
         className="w-100 rounded-0"
         alt="Post"
       />

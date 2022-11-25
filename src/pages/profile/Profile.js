@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Row, Col } from "reactstrap";
-import { MdPhotoCamera, MdLocationCity, MdHome } from "react-icons/md";
 import Share from "../../components/home/feed/Share";
+import Post from "../../components/home/feed/Post";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchProfile } from "../../redux/slices/userSlice";
+import { useParams } from "react-router-dom";
+import { MdPhotoCamera, MdLocationCity, MdHome } from "react-icons/md";
 import { RiHomeHeartFill } from "react-icons/ri";
 import { FaBirthdayCake } from "react-icons/fa";
-import Post from "../../components/home/feed/Post";
 const Profile = () => {
+  const dispatch = useDispatch();
+  const userProfile = useSelector((state) => state.users.crrProfile);
+  const crrProfileId = useParams();
+
+  useEffect(() => {
+    dispatch(fetchProfile(crrProfileId));
+  }, [dispatch]);
+
   const friends = [
     "Hasan Solak",
     "Charles LökLök",
@@ -18,13 +29,14 @@ const Profile = () => {
     "Meks Ferstapen",
   ];
   //max 9 tane arkadaş listelenecek, tamamını görmek için see all diyince modal açılacak
+
   return (
     <div className="w-100">
       <div className="profile-top flex-center flex-column">
         <img
-          src="https://hasansolak.com/instagram-ui-clone/materials/photo1.png"
+          src="https://images.pexels.com/photos/3078831/pexels-photo-3078831.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
           alt="cover"
-          className="w-100 pointer"
+          className="w-100 pointer object-fit-cover"
           style={{
             maxHeight: "25vh",
             backgroundPosition: "center",
@@ -39,8 +51,11 @@ const Profile = () => {
           }}
         >
           <img
-            src="https://hasansolak.com/static/media/me.ceef88180459ba31b0ae.png"
-            alt="cover"
+            src={
+              userProfile?.coverPicture ||
+              process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"
+            }
+            alt="user profile"
             width={150}
             height={150}
             className="rounded-circle pointer changeable-profile-pic"
@@ -60,21 +75,21 @@ const Profile = () => {
             </div>
           </button>
         </div>
-        <span className="fw-bold fs-5 default">Hasan Solak</span>
+        <span className="fw-bold fs-5 default">{userProfile?.username}</span>
         <span className="fs-6 text-secondary flex-center gap-1 default pb-2">
-          Hi, there! I am using SociableCat.
+          {userProfile?.desc || "Hi, there! I am using SociableCat."}
         </span>
         <div className="flex-center gap-3 py-2 border-top border-bottom">
           <div className="flex-center flex-column gap-0 user-profile-stats">
-            <span className="fw-bold">4</span>
+            <span className="fw-bold">{userProfile?.followingsCount}</span>
             <span className="fs-7">Posts</span>
           </div>
           <div className="flex-center flex-column gap-0 user-profile-stats">
-            <span className="fw-bold">57</span>
+            <span className="fw-bold">{userProfile?.followersCount}</span>
             <span className="fs-7">Followers</span>
           </div>
           <div className="flex-center flex-column gap-0 user-profile-stats">
-            <span className="fw-bold">57</span>
+            <span className="fw-bold">{userProfile?.followingsCount}</span>
             <span className="fs-7">Following</span>
           </div>
         </div>
@@ -127,9 +142,10 @@ const Profile = () => {
               Member since 19.11.2022
             </Col>
             <Col sm="12" className="mt-3 pt-3 border-top fw-600 flex-between">
-              <span className="flex-align-center gap-1">
-                Friends <span className="fs-8 text-secondary">(31)</span>
-              </span>
+              <p className="m-0 flex-align-center gap-1">
+                <span>Friends</span>{" "}
+                <span className="fs-8 text-secondary">(31)</span>
+              </p>
               <button className="fs-7 hvr-underline fw-600">See All</button>
             </Col>
             {friends?.length > 0 ? (
@@ -137,19 +153,19 @@ const Profile = () => {
                 {friends?.map((friend, index) => (
                   <Col
                     key={index}
+                    xs="0"
                     md="4"
                     className="p-0 mt-2 d-flex align-items-start flex-column"
                   >
                     <img
                       src={
-                        index % 2 === 0
-                          ? "https://hasansolak.com/static/media/me.ceef88180459ba31b0ae.png"
-                          : "https://placeimg.com/640/480/animals"
+                        process.env.REACT_APP_PUBLIC_FOLDER +
+                        "/svg/noavatar.svg"
                       }
-                      alt=""
+                      alt="user profile"
                       width={100}
                       height={100}
-                      className="rounded-2"
+                      className="rounded-2 object-fit-cover"
                     />
                     <span
                       className="fs-8 text-start w-100"

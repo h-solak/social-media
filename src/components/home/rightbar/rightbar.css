@@ -25,7 +25,7 @@
     display: flex;
     align-items: center;
     justify-content: start;
-    gap: 16px;
+    gap: 0px;
     padding: 12px 24px;
     cursor: pointer;
 }
@@ -35,25 +35,15 @@
     transition: 0.1s ease;
 }
 
-.rightbar-col:hover,
+
+/* .rightbar-col:hover,
 .rightbar-friend-col:hover {
     background-color: rgba(110, 110, 110, 0.1);
-}
+} */
 
+
+/* 
 .rightbar-col:active,
 .rightbar-friend:active {
     background-color: rgba(110, 110, 110, 0.2);
-}
-
-.online-friend-pic {
-    position: relative;
-}
-
-.friend-online-status {
-    /*This code might break*/
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    margin-top: -10px;
-    border-radius: 99px;
-}
+} */

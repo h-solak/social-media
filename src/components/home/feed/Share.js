@@ -12,10 +12,8 @@ const Share = () => {
     <div className="share w-100 mt-3 px-2 bg-white shadow rounded-3">
       <div className="d-flex align-items-bottom w-100 pt-2 pb-2">
         <img
-          src={
-            "https://hasansolak.com/static/media/me.ceef88180459ba31b0ae.png"
-          }
-          alt="User Profile"
+          src={process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"}
+          alt="user profile"
           width={50}
           height={50}
           className="rounded-circle"
@@ -38,15 +36,15 @@ const Share = () => {
             <div className="flex-align-center">
               <div className="d-flex align-items-center justify-content-center gap-1 p-2 share-option pointer rounded-2">
                 <MdPhotoLibrary className="fs-3" />
-                Photo
+                <span className="display-sm-md">Photo</span>
               </div>
-              <div className="d-none d-md-flex align-items-center justify-content-center gap-1 p-2 share-option pointer rounded-2">
+              <div className="d-flex align-items-center justify-content-center gap-1 p-2 share-option pointer rounded-2">
                 <MdLocationPin className="fs-3" />
-                Location
+                <span className="display-sm-md">Location</span>
               </div>
-              <div className="d-none d-md-flex align-items-center justify-content-center gap-1 p-2 share-option pointer rounded-2">
+              <div className="d-flex align-items-center justify-content-center gap-1 p-2 share-option pointer rounded-2">
                 <MdEmojiEmotions className="fs-3" />
-                Feelings
+                <span className="display-sm-md">Feelings</span>
               </div>
             </div>
             <button className="share-btn px-3 p-1 border-0 color-white rounded-2 bg-color-green">

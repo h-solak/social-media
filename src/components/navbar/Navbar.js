@@ -1,25 +1,33 @@
 import React, { useState } from "react";
 import "./navbar.css";
-import { Row, Col, Input } from "reactstrap";
-// import {
-//   Row,
-//   Col,
-//   Input,
-//   UncontrolledDropdown,
-//   DropdownToggle,
-//   DropdownMenu,
-//   DropdownItem,
-// } from "reactstrap";
+import {
+  Row,
+  Col,
+  Input,
+  UncontrolledDropdown,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
 import { GiCat } from "react-icons/gi";
 import { FaRegUserCircle, FaSearch, FaUserFriends } from "react-icons/fa";
-import { MdNotifications, MdChat } from "react-icons/md";
+import { MdNotifications, MdChat, MdOutlineSettings } from "react-icons/md";
+import { HiOutlineLogout, HiOutlineUser } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { IoLogOut, IoSettingsSharp, IoPerson } from "react-icons/io5";
+import { logOutTemp } from "../../redux/slices/authSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const [isFocused, setIsFocused] = useState(false);
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggle = () => setDropdownOpen((prevState) => !prevState);
   return (
     <Col xs="12" sm="12" className="navbar-container px-4">
       <Row className="m-0 h-100">
@@ -83,19 +91,51 @@ const Navbar = () => {
           md="3"
           className="flex-align-center justify-content-end gap-3"
         >
-          <FaUserFriends className="d-none d-md-block fs-3 color-white nav-icon" />
-          <MdChat className="d-none d-md-block fs-4 color-white nav-icon" />
+          {/* <FaUserFriends className="d-none d-md-block fs-3 color-white nav-icon" /> */}
           <MdNotifications className="d-none d-md-block fs-3 color-white nav-icon" />
-          <div className="nav-dropdown">
-            <img
-              src={process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"}
-              alt="user profile"
-              width={42}
-              height={42}
-              className="navbar-profile-pic fs-2 pointer rounded-circle object-fit-cover"
-              onClick={() => navigate("/profile/" + user?._id)}
-            />
-          </div>
+          <MdChat className="d-none d-md-block fs-4 color-white nav-icon" />
+          <Dropdown isOpen={dropdownOpen} toggle={toggle} className="border-0">
+            <DropdownToggle className="bg-transparent border-0">
+              <div className="nav-dropdown flex-center gap-2 pointer">
+                <span className="display-sm-md color-white fs-7">
+                  {user?.username || "User"}
+                </span>
+                <img
+                  src={
+                    process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"
+                  }
+                  alt="user profile"
+                  width={42}
+                  height={42}
+                  className="navbar-profile-pic fs-2 pointer rounded-circle object-fit-cover"
+                />
+              </div>
+            </DropdownToggle>
+            <DropdownMenu className="">
+              <DropdownItem
+                className="d-flex align-items-center gap-2"
+                onClick={() => navigate("/profile/" + user?._id)}
+              >
+                <IoPerson className="" style={{ fontSize: "18px" }} />
+                <span className="">Profile</span>
+              </DropdownItem>
+              <DropdownItem className="d-flex align-items-center gap-2">
+                <IoSettingsSharp className="" style={{ fontSize: "18px" }} />
+                <span className="">Settings</span>
+              </DropdownItem>
+              <DropdownItem divider />
+              <DropdownItem
+                className="d-flex align-items-center gap-2"
+                onClick={() => {
+                  dispatch(logOutTemp());
+                  navigate("/login");
+                }}
+              >
+                <IoLogOut className="" style={{ fontSize: "18px" }} />
+                <span className="">Logout</span>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         </Col>
       </Row>
     </Col>

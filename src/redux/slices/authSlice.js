@@ -62,6 +62,10 @@ export const loginUser = createAsyncThunk("login/loginUser", async (data) => {
   return res.data.data;
 });
 
+export const logOutTemp = createAsyncThunk("logout/logout", async () => {
+  return {};
+});
+
 /* ---Slice-- */
 
 export const authSlice = createSlice({
@@ -79,6 +83,9 @@ export const authSlice = createSlice({
       state.isRegistered = action.payload;
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
+    builder.addCase(logOutTemp.fulfilled, (state, action) => {
       state.user = action.payload;
     });
   },

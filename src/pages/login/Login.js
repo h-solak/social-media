@@ -151,7 +151,7 @@ const Login = () => {
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              // disabled={isSubmitting}
               className="w-75 login-btn py-2 border-0 color-white rounded-2 bg-color-green mt-5"
             >
               Sign In

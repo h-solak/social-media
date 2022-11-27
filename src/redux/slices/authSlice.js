@@ -15,10 +15,14 @@ export const registerUser = createAsyncThunk(
       .catch((err) => {
         if (err.response) {
           //server responded with a status code
-          errorToast(
-            err.response.data.desc || "Something went wrong!",
-            "bottom-center"
-          );
+          console.log(err.response);
+          if (err.response.data.keyValue.email) {
+            errorToast("This email is already in use");
+          } else if (err.response.data.keyValue.username) {
+            errorToast("This username is taken");
+          } else {
+            errorToast("Something went wrong!");
+          }
         } else if (err.request) {
           //no response receieved
           errorToast("Something went wrong!");

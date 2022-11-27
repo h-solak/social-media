@@ -19,7 +19,7 @@ import toast from "react-hot-toast";
 import darkToast from "../../../helpers/darkToast";
 import { format } from "timeago.js";
 
-const Post = () => {
+const Post = ({ postContent }) => {
   const navigate = useNavigate();
   const [isFocused, setIsFocused] = useState(false);
   const [isLiked, setIsLiked] = useState(false); //for testing
@@ -36,39 +36,40 @@ const Post = () => {
       className="share w-100 mt-5 bg-white shadow"
       style={{ borderRadius: "12px 12px 12px 12px" }}
     >
-      <div className="flex-between p-2 px-3">
-        <div className="d-flex align-items-start flex-column">
-          <div className="w-100 flex-between">
-            <div className="flex-align-center gap-1">
-              <img
-                src={process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"}
-                alt="user profile"
-                width={45}
-                height={45}
-                className="rounded-circle"
-              />
-              <div className="d-flex align-items-start flex-column px-2">
-                <p className="m-0 fs-7 fw-600 default">
-                  Charles Leclerc
-                  <button className="fs-8 fw-bold text-secondary hvr-underline">
-                    following
-                  </button>
-                </p>
-                <span className="fs-8 text-secondary default">5 hours ago</span>
-              </div>
+      <div className="w-100 p-2 px-3 d-flex align-items-start flex-column">
+        <div className="w-100 flex-between">
+          <div className="flex-align-center gap-1">
+            <img
+              src={process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"}
+              alt="user profile"
+              width={45}
+              height={45}
+              className="rounded-circle"
+            />
+            <div className="d-flex align-items-start flex-column px-2">
+              <p className="m-0 fs-7 fw-600 default">
+                Charles Leclerc
+                <button className="fs-8 fw-bold text-secondary hvr-underline">
+                  following
+                </button>
+              </p>
+              <span className="fs-8 text-secondary default">
+                {format(postContent?.createdAt, "en_US")}
+              </span>
             </div>
-            <button className="post-more-btn p-1 rounded-circle flex-center">
-              <MdMoreVert className="fs-4" />
-            </button>
           </div>
-          <p className="m-0 mt-3">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste
-            laborum consequuntur repellat tempore dolor! Placeat ab
-            reprehenderit praesentium dolore doloremque? Voluptas maxime illum
-            non. Quam quia placeat a cupiditate aut.
-          </p>
+          <button className="post-more-btn p-1 rounded-circle flex-center">
+            <MdMoreVert className="fs-4" />
+          </button>
         </div>
+        <p className="w-100 m-0 mt-2">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores
+          fugit expedita dolorem vitae quidem, beatae provident ipsa eum
+          inventore neque aliquid, ducimus tenetur minus corporis tempore, animi
+          necessitatibus quos aperiam.
+        </p>
       </div>
+
       <img
         src="https://images.pexels.com/photos/4509131/pexels-photo-4509131.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
         className="w-100 rounded-0"

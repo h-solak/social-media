@@ -5,9 +5,26 @@ import { GiCat } from "react-icons/gi";
 import { FaRegUserCircle, FaSearch, FaUserFriends } from "react-icons/fa";
 import { MdPhotoLibrary, MdLocationPin, MdEmojiEmotions } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { sharePost } from "../../../redux/slices/postSlice";
 
 const Share = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
   const [isFocused, setIsFocused] = useState(false);
+  const [postText, setPostText] = useState("");
+
+  const handleSharePost = () => {
+    if (postText !== "") {
+      dispatch(
+        sharePost({
+          userId: user?._id,
+          desc: postText,
+          img: "",
+        })
+      );
+    }
+  };
   return (
     <div className="share w-100 mt-3 px-2 bg-white shadow rounded-3">
       <div className="d-flex align-items-bottom w-100 pt-2 pb-2">
@@ -28,6 +45,8 @@ const Share = () => {
           style={{ resize: "none" }}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          value={postText}
+          onChange={(e) => setPostText(e.target.value)}
         />
       </div>
       <Row className="m-0 p-0">
@@ -47,7 +66,10 @@ const Share = () => {
                 <span className="display-sm-md">Feelings</span>
               </div>
             </div>
-            <button className="share-btn px-3 p-1 border-0 color-white rounded-2 bg-color-green">
+            <button
+              className="share-btn px-3 p-1 border-0 color-white rounded-2 bg-color-green"
+              onClick={handleSharePost}
+            >
               Share
             </button>
           </div>

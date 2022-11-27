@@ -24,7 +24,6 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   const [isFocused, setIsFocused] = useState(false);
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => setDropdownOpen((prevState) => !prevState);
@@ -94,8 +93,17 @@ const Navbar = () => {
           {/* <FaUserFriends className="d-none d-md-block fs-3 color-white nav-icon" /> */}
           <MdNotifications className="d-none d-md-block fs-3 color-white nav-icon" />
           <MdChat className="d-none d-md-block fs-4 color-white nav-icon" />
-          <Dropdown isOpen={dropdownOpen} toggle={toggle} className="border-0">
-            <DropdownToggle className="bg-transparent border-0">
+          <Dropdown
+            isOpen={dropdownOpen}
+            toggle={toggle}
+            onMouseOver={() => setDropdownOpen(true)}
+            onMouseLeave={() => setDropdownOpen(false)}
+            className="border-0"
+          >
+            <DropdownToggle
+              onClick={() => navigate("/profile/" + user?._id)}
+              className="bg-transparent border-0"
+            >
               <div className="nav-dropdown flex-center gap-2 pointer">
                 <span className="display-sm-md color-white fs-7">
                   {user?.username || "User"}

@@ -4,8 +4,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import darkToast from "../../helpers/darkToast";
 import errorToast from "../../helpers/errorToast";
 import { TiTick } from "react-icons/ti";
-import { useDispatch } from "react-redux";
-
 const config = {
   headers: {
     Authorization: `SociableCat ${localStorage.getItem(

@@ -4,29 +4,25 @@ import Share from "../../components/home/feed/Share";
 import Post from "../../components/home/feed/Post";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProfile } from "../../redux/slices/userSlice";
+import { getProfilePosts } from "../../redux/slices/postSlice";
 import { useParams } from "react-router-dom";
 import { MdPhotoCamera, MdLocationCity, MdHome } from "react-icons/md";
 import { RiHomeHeartFill } from "react-icons/ri";
 import { FaBirthdayCake } from "react-icons/fa";
-const Profile = () => {
+const Profile = ({ crrProfile, user }) => {
   const dispatch = useDispatch();
-  const userProfile = useSelector((state) => state.users.crrProfile);
   const crrProfileId = useParams();
 
-  useEffect(() => {
-    dispatch(fetchProfile(crrProfileId));
-  }, [dispatch]);
-
   const friends = [
-    "Hasan Solak",
-    "Charles LökLök",
-    "Serhio Periz",
-    "Meks Ferstapen",
-    "Lan Strol",
-    "Tırın Tırın Tırınının",
-    "Can Afacan Şaklaban",
-    "Serhio Periz",
-    "Meks Ferstapen",
+    "User",
+    "User",
+    "User",
+    "User",
+    "User",
+    "User",
+    "User",
+    "User",
+    "User",
   ];
   //max 9 tane arkadaş listelenecek, tamamını görmek için see all diyince modal açılacak
 
@@ -52,7 +48,7 @@ const Profile = () => {
         >
           <img
             src={
-              userProfile?.coverPicture ||
+              crrProfile?.coverPicture ||
               process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"
             }
             alt="user profile"
@@ -75,21 +71,27 @@ const Profile = () => {
             </div>
           </button>
         </div>
-        <span className="fw-bold fs-5 default">{userProfile?.username}</span>
+        <span className="fw-bold fs-5 default">
+          {crrProfile?.username || "Cat in Disguise"}
+        </span>
         <span className="fs-6 text-secondary flex-center gap-1 default pb-2">
-          {userProfile?.desc || "Hi, there! I am using SociableCat."}
+          {crrProfile?.desc || "Hi, there! I am using SociableCat."}
         </span>
         <div className="flex-center gap-3 py-2 border-top border-bottom">
           <div className="flex-center flex-column gap-0 user-profile-stats">
-            <span className="fw-bold">{userProfile?.followingsCount}</span>
+            <span className="fw-bold">{crrProfile?.posts?.length || "0"}</span>
             <span className="fs-7">Posts</span>
           </div>
           <div className="flex-center flex-column gap-0 user-profile-stats">
-            <span className="fw-bold">{userProfile?.followersCount}</span>
+            <span className="fw-bold">
+              {crrProfile?.followers?.length || "0"}
+            </span>
             <span className="fs-7">Followers</span>
           </div>
           <div className="flex-center flex-column gap-0 user-profile-stats">
-            <span className="fw-bold">{userProfile?.followingsCount}</span>
+            <span className="fw-bold">
+              {crrProfile?.followings?.length || "0"}
+            </span>
             <span className="fs-7">Following</span>
           </div>
         </div>
@@ -101,15 +103,16 @@ const Profile = () => {
         </Col> */}
         <Col sm="12" md="8" className="p-0 mb-5 px-5">
           <Row className="m-0 p-0">
-            <Col sm="12" className="p-0">
-              <Share />
-            </Col>
-            <Col sm="12" className="p-0">
-              <Post />
-            </Col>
-            <Col sm="12" className="p-0">
-              <Post />
-            </Col>
+            {crrProfileId === user._id ? (
+              <Col sm="12" className="p-0">
+                <Share />
+              </Col>
+            ) : null}
+            {crrProfile?.posts?.map((post, index) => (
+              <Col sm="12" className="p-0">
+                <Post key={index} postContent={post} />
+              </Col>
+            ))}
           </Row>
         </Col>
         <Col

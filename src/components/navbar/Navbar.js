@@ -17,7 +17,7 @@ import { HiOutlineLogout, HiOutlineUser } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { IoLogOut, IoSettingsSharp, IoPerson } from "react-icons/io5";
-import { logOutTemp } from "../../redux/slices/authSlice";
+import { logOut } from "../../redux/slices/authSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -100,10 +100,7 @@ const Navbar = () => {
             onMouseLeave={() => setDropdownOpen(false)}
             className="border-0"
           >
-            <DropdownToggle
-              onClick={() => navigate("/profile/" + user?._id)}
-              className="bg-transparent border-0"
-            >
+            <DropdownToggle className="bg-transparent border-0">
               <div className="nav-dropdown flex-center gap-2 pointer">
                 <span className="display-sm-md color-white fs-7">
                   {user?.username || "User"}
@@ -115,7 +112,7 @@ const Navbar = () => {
                   alt="user profile"
                   width={42}
                   height={42}
-                  className="navbar-profile-pic fs-2 pointer rounded-circle object-fit-cover"
+                  className="navbar-profile-pic pointer rounded-circle object-fit-cover"
                 />
               </div>
             </DropdownToggle>
@@ -135,7 +132,7 @@ const Navbar = () => {
               <DropdownItem
                 className="d-flex align-items-center gap-2"
                 onClick={() => {
-                  dispatch(logOutTemp());
+                  dispatch(logOut());
                   navigate("/login");
                 }}
               >

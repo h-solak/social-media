@@ -30,7 +30,13 @@ const Sidebar = () => {
       className="m-0 border-end pt-3 sidebar flex-column"
       style={{ position: "sticky", top: "60px" }}
     >
-      <button className="w-100 p-0 sidebar-col" onClick={() => navigate("/")}>
+      <button
+        className="w-100 p-0 sidebar-col"
+        onClick={() => {
+          navigate("/");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
+      >
         <div className="sidebar-item">
           <FaCat className="fs-4" />
           <span>Feed</span>
@@ -56,7 +62,10 @@ const Sidebar = () => {
       </button>
       <button
         className="w-100 p-0 mb-3 sidebar-col"
-        onClick={() => navigate("/profile/" + user?._id)}
+        onClick={() => {
+          navigate("/profile/" + user?._id);
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }}
       >
         <div className="sidebar-item">
           <MdPerson className="fs-4" />

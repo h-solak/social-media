@@ -13,13 +13,13 @@ const Login = () => {
   const navigate = useNavigate();
   const [isFocusedOn, setIsFocusedOn] = useState(0);
 
-  const user = useSelector((state) => state.auth.user);
+  const { userToken } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (user?._id) {
+    if (userToken.length > 15) {
       navigate("/");
     }
-  }, [user, navigate]);
+  }, [userToken, navigate]);
 
   const requiredError = (text) => (
     <p className="m-0 d-flex align-items-bottom w-100 text-start text-danger fs-7 fw-bold">

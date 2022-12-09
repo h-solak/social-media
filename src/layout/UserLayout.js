@@ -1,18 +1,24 @@
 import React, { useEffect } from "react";
 import Navbar from "../components/navbar/Navbar";
-import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const UserLayout = ({ children }) => {
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
+  const { userToken } = useSelector((state) => state.auth);
+  const postError = useSelector((state) => state.post.isUnauthorized);
+
   useEffect(() => {
-    if (!user?._id) {
+    console.log(userToken, "111aaa111", postError);
+    if (userToken.length < 15 || postError === "Unauthorized") {
       navigate("/login");
+      console.log("yey");
     }
-  }, [navigate]);
+  }, [userToken, postError, navigate, dispatch]);
+
   return (
     <>
-      {user?._id && (
+      {userToken.length > 15 && (
         <>
           <Navbar />
           {children}

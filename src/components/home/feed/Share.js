@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./feed.css";
 import { Row, Col, Input, Button } from "reactstrap";
 import { GiCat } from "react-icons/gi";
@@ -6,11 +6,12 @@ import { FaRegUserCircle, FaSearch, FaUserFriends } from "react-icons/fa";
 import { MdPhotoLibrary, MdLocationPin, MdEmojiEmotions } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { sharePost } from "../../../redux/slices/postSlice";
+import { resetPostIsShared, sharePost } from "../../../redux/slices/postSlice";
 
 const Share = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const { postIsShared } = useSelector((state) => state.post);
   const [isFocused, setIsFocused] = useState(false);
   const [postText, setPostText] = useState("");
 
@@ -25,6 +26,14 @@ const Share = () => {
       );
     }
   };
+
+  useEffect(() => {
+    if (postIsShared) {
+      setPostText("");
+      dispatch(resetPostIsShared());
+    }
+  }, [postIsShared]);
+
   return (
     <div className="share w-100 mt-3 px-2 bg-white shadow rounded-3">
       <div className="d-flex align-items-bottom w-100 pt-2 pb-2">
@@ -66,12 +75,21 @@ const Share = () => {
                 <span className="display-sm-md">Feelings</span>
               </div>
             </div>
-            <button
-              className="share-btn px-3 p-1 border-0 color-white rounded-2 bg-color-green"
-              onClick={handleSharePost}
-            >
-              Share
-            </button>
+            {postText.length > 0 ? (
+              <button
+                className="share-btn px-4 p-1 border-0 color-white rounded-2 bg-color-green"
+                onClick={handleSharePost}
+              >
+                Share
+              </button>
+            ) : (
+              <button
+                className="share-btn px-3 p-1 border-0 color-white rounded-2 bg-color-green"
+                disabled
+              >
+                Share
+              </button>
+            )}
           </div>
         </Col>
       </Row>

@@ -6,6 +6,7 @@ import Share from "./Share";
 import Post from "./Post";
 import { useDispatch, useSelector } from "react-redux";
 import { getTimelinePosts } from "../../../redux/slices/postSlice";
+import { BsArrowUp } from "react-icons/bs";
 const Feed = () => {
   const dispatch = useDispatch();
   const [posts, setPosts] = useState(["a"]);
@@ -25,9 +26,19 @@ const Feed = () => {
           timelinePosts?.map((post, index) => (
             <Post key={index} postContent={post} />
           ))}
-        <Row className="p-3 text-success mt-5">USER: {user?.username}</Row>
-        <Row className="p-3 text-success mt-5">
-          Followings: {user?.followings}
+        <Row className="p-3 mt-5 justify-content-center">
+          <p className="mb-0 text-center text-secondary fs-7 default">
+            Looks like there is nothing else to see.
+          </p>
+          <p className="mb-0 text-center fs-7 default">
+            <button
+              className=""
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            >
+              <BsArrowUp />
+              Go Back To Top
+            </button>
+          </p>
         </Row>
       </div>
     </div>

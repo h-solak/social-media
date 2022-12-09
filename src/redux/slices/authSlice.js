@@ -3,11 +3,16 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import darkToast from "../../helpers/darkToast";
 import errorToast from "../../helpers/errorToast";
 
+//this is better initialization bc if the client has closed the window, they might still be signed in if the jwt is not expired
+// const userToken = localStorage.getItem("sociableCat_userToken")
+//   ? localStorage.getItem("sociableCat_userToken")
+//   : null;
+
 export const registerUser = createAsyncThunk(
   "register/registerUser",
   async (data) => {
     const res = await axios
-      .post(`http://localhost:8800/api/auth/register`, {
+      .post(`${process.env.REACT_APP_API_ENDPOINT}/auth/register`, {
         username: data.username,
         email: data.email,
         password: data.password,
@@ -44,10 +49,18 @@ export const resetRegistered = createAsyncThunk(
 
 export const loginUser = createAsyncThunk("login/loginUser", async (data) => {
   const res = await axios
-    .post(`http://localhost:8800/api/auth/login`, {
-      email: data.email,
-      password: data.password,
-    })
+    .post(
+      `${process.env.REACT_APP_API_ENDPOINT}/auth/login`,
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
     .catch((err) => {
       if (err.response) {
         //server responded with a status code
@@ -63,11 +76,16 @@ export const loginUser = createAsyncThunk("login/loginUser", async (data) => {
         errorToast("Something went wrong!");
       }
     });
-  return res.data.data;
+
+  return {
+    user: res.data.data,
+    userToken: res.data.jwtToken,
+  };
 });
 
-export const logOutTemp = createAsyncThunk("logout/logout", async () => {
-  return {};
+export const logOut = createAsyncThunk("auth/logout", async () => {
+  // document.cookie = `token=0`;
+  return "";
 });
 
 /* ---Slice-- */
@@ -77,8 +95,8 @@ export const authSlice = createSlice({
   initialState: {
     user: {},
     isRegistered: "",
+    userToken: "",
   },
-  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.isRegistered = action.payload;
@@ -87,10 +105,16 @@ export const authSlice = createSlice({
       state.isRegistered = action.payload;
     });
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.userToken = action.payload.userToken;
+      localStorage.setItem("sociableCat_userToken", action.payload.userToken);
+      // document.cookie = `token=${action.payload.userToken}`;
     });
-    builder.addCase(logOutTemp.fulfilled, (state, action) => {
-      state.user = action.payload;
+    builder.addCase(logOut.fulfilled, (state, action) => {
+      localStorage.setItem("sociableCat_userToken", "");
+      localStorage.removeItem("persist:root");
+      state.userToken = "";
+      state.user = {};
     });
   },
 });

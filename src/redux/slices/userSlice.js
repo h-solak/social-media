@@ -6,24 +6,20 @@ import errorToast from "../../helpers/errorToast";
 import { TiUserAdd, TiUserDelete } from "react-icons/ti";
 
 /* USER THAT LOGGED IN */
-// export const fetchUser = createAsyncThunk("users/fetchUser", async (data) => {
-//   try {
-//     const res = await axios.get(
-//       `http://localhost:8800/api/users/${data?.userId}`
-//     );
-//     return res.data.data;
-//   } catch (err) {
-//     // custom error
-//   }
-// });
-
-/* USER THAT LOGGED IN */
 export const fetchProfile = createAsyncThunk(
   "users/fetchProfile",
   async (data) => {
     try {
+      const config = {
+        headers: {
+          Authorization: `SociableCat ${localStorage.getItem(
+            "sociableCat_userToken"
+          )}`,
+        },
+      };
       const res = await axios.get(
-        `http://localhost:8800/api/users/${data?.userId}`
+        `${process.env.REACT_APP_API_ENDPOINT}/users/${data?.userId}`,
+        config
       );
       return res.data.data;
     } catch (err) {
@@ -33,10 +29,22 @@ export const fetchProfile = createAsyncThunk(
 );
 
 export const followUser = createAsyncThunk("users/followUser", async (data) => {
+  const config = {
+    headers: {
+      Authorization: `SociableCat ${localStorage.getItem(
+        "sociableCat_userToken"
+      )}`,
+    },
+  };
+
   const res = await axios
-    .put(`http://localhost:8800/api/users/follow/${data?.followingId}`, {
-      userId: data?.userId,
-    })
+    .put(
+      `${process.env.REACT_APP_API_ENDPOINT}/users/follow/${data?.followingId}`,
+      {
+        userId: data?.userId,
+      },
+      config
+    )
     .catch((err) => {
       if (err.response) {
         //server responded with a status code
@@ -56,10 +64,21 @@ export const followUser = createAsyncThunk("users/followUser", async (data) => {
 export const unfollowUser = createAsyncThunk(
   "users/unfollowUser",
   async (data) => {
+    const config = {
+      headers: {
+        Authorization: `SociableCat ${localStorage.getItem(
+          "sociableCat_userToken"
+        )}`,
+      },
+    };
     const res = await axios
-      .put(`http://localhost:8800/api/users/unfollow/${data?.followingId}`, {
-        userId: data?.userId,
-      })
+      .put(
+        `${process.env.REACT_APP_API_ENDPOINT}/users/unfollow/${data?.followingId}`,
+        {
+          userId: data?.userId,
+        },
+        config
+      )
       .catch((err) => {
         if (err.response) {
           //server responded with a status code
@@ -80,29 +99,15 @@ export const unfollowUser = createAsyncThunk(
 /* ---Slice-- */
 
 export const userSlice = createSlice({
-  name: "user",
+  name: "users",
   initialState: {
     user: {},
     crrProfile: {},
-    loading: false,
-    error: "",
-    choosenUserInfo: {},
-    followError: "",
   },
-  // reducers: {
-  //   getUser: (state, action) => {
-  //     state.user = fetchUser(action.payload);
-  //   },
-  //   getAnotherUsersInfo: (state, action) => {
-  //     state.choosenUserInfo = fetchAnotherUsersInfo(action.payload);
-  //   },
-  // },
   extraReducers: (builder) => {
     builder.addCase(fetchProfile.fulfilled, (state, action) => {
       state.crrProfile = action.payload;
     });
-    // builder.addCase(followUser.fulfilled, (state, action) => {});
-    // builder.addCase(unfollowUser.fulfilled, (state, action) => {});
   },
 });
 

@@ -7,7 +7,6 @@ import "./app.css";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import NotFound from "./pages/notFound/NotFound";
-import { ProtectedRoute } from "./components/router/ProtectedRouter";
 import UserLayout from "./layout/UserLayout";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
@@ -26,6 +25,7 @@ function App() {
   if (isPageLoading) {
     return null;
   }
+
   return (
     <>
       <Toaster position="bottom-center" reverseOrder={false} />
@@ -46,29 +46,13 @@ function App() {
           <Route
             path="/profile/:userId" //it will be /profile/:username
             element={
-              <ProtectedRoute>
-                <UserLayout>
-                  <Profile />
-                </UserLayout>
-              </ProtectedRoute>
+              <UserLayout>
+                <Profile />
+              </UserLayout>
             }
           />
-          <Route
-            path="/register"
-            element={
-              <ProtectedRoute>
-                <Register />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <ProtectedRoute>
-                <Login />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           {/* <Route path="/books" element={<BookList />} /> */}
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -27,7 +27,7 @@ const Sidebar = () => {
   ];
   return (
     <div
-      className="m-0 border-end pt-3 sidebar flex-column"
+      className="m-0 border-end pt-1 sidebar flex-column"
       style={{ position: "sticky", top: "60px" }}
     >
       <button
@@ -42,7 +42,12 @@ const Sidebar = () => {
           <span>Feed</span>
         </div>
       </button>
-      <button className="w-100 p-0 sidebar-col">
+      <button
+        className="w-100 p-0 sidebar-col"
+        onClick={() => {
+          navigate("/messenger");
+        }}
+      >
         <div className="sidebar-item">
           <MdChat className="fs-4" />
           <span>Chats</span>

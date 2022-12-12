@@ -9,10 +9,9 @@ import { useParams } from "react-router-dom";
 import { MdPhotoCamera, MdLocationCity, MdHome } from "react-icons/md";
 import { RiHomeHeartFill } from "react-icons/ri";
 import { FaBirthdayCake } from "react-icons/fa";
-const Profile = ({ crrProfile, user }) => {
+const Profile = ({ crrProfile, user, isOtherProfile }) => {
   const dispatch = useDispatch();
   const crrProfileId = useParams();
-
   const friends = [
     "User",
     "User",
@@ -103,7 +102,7 @@ const Profile = ({ crrProfile, user }) => {
         </Col> */}
         <Col sm="12" md="8" className="p-0 mb-5 px-5">
           <Row className="m-0 p-0">
-            {crrProfileId === user._id ? (
+            {!isOtherProfile ? (
               <Col sm="12" className="p-0">
                 <Share />
               </Col>

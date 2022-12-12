@@ -92,7 +92,10 @@ const Navbar = () => {
         >
           {/* <FaUserFriends className="d-none d-md-block fs-3 color-white nav-icon" /> */}
           <MdNotifications className="d-none d-md-block fs-3 color-white nav-icon" />
-          <MdChat className="d-none d-md-block fs-4 color-white nav-icon" />
+          <MdChat
+            className="d-none d-md-block fs-4 color-white nav-icon"
+            onClick={() => navigate("/messenger")}
+          />
           <Dropdown
             isOpen={dropdownOpen}
             toggle={toggle}

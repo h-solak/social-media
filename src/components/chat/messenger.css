@@ -1,0 +1,37 @@
+.chat-user-list,
+.chat-container {
+  height: calc(100vh - 60px);
+  overflow-y: scroll;
+}
+
+.chat-user-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.chat-user-list::-webkit-scrollbar-thumb {
+  border-radius: 36px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.chat-user-list::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.chat-user-list::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.chat-user:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/*Messages*/
+.chat-topbar,
+.chat-bottombar {
+  height: 60px;
+}
+
+.chat-message-list {
+  height: calc(100vh - 180px); /*60px for navbar, chat-topbar, bottombar*/
+  overflow-y: scroll;
+}

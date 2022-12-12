@@ -3,13 +3,14 @@ import { Row, Col } from "reactstrap";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile";
 import Navbar from "./components/navbar/Navbar";
-import "./app.css";
+import "./App.css";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import NotFound from "./pages/notFound/NotFound";
 import UserLayout from "./layout/UserLayout";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
+import Messenger from "./pages/messenger";
 function App() {
   const [isPageLoading, setIsPageLoading] = useState(true);
 
@@ -42,7 +43,8 @@ function App() {
               </UserLayout>
             }
           />
-          {/* <Route path="/profile" element={<Profile />} /> */}
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route
             path="/profile/:userId" //it will be /profile/:username
             element={
@@ -51,9 +53,14 @@ function App() {
               </UserLayout>
             }
           />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          {/* <Route path="/books" element={<BookList />} /> */}
+          <Route
+            path="/messenger" //it will be /profile/:username
+            element={
+              <UserLayout>
+                <Messenger />
+              </UserLayout>
+            }
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Row>

@@ -4,15 +4,10 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import darkToast from "../../helpers/darkToast";
 import errorToast from "../../helpers/errorToast";
 import { TiTick } from "react-icons/ti";
-const config = {
-  headers: {
-    Authorization: `SociableCat ${localStorage.getItem(
-      "sociableCat_userToken"
-    )}`,
-  },
-};
+
 
 export const sharePost = createAsyncThunk("posts/sharePost", async (data) => {
+
   const res = await axios
     .post(
       `${process.env.REACT_APP_API_ENDPOINT}/posts`,
@@ -21,7 +16,13 @@ export const sharePost = createAsyncThunk("posts/sharePost", async (data) => {
         desc: data?.desc,
         img: data?.img,
       },
-      config
+      {
+        headers: {
+          Authorization: `SociableCat ${localStorage.getItem(
+            "sociableCat_userToken"
+          )}`,
+        },
+      }
     )
     .catch((err) => {
       if (err.response) {
@@ -55,6 +56,7 @@ export const resetPostIsShared = createAsyncThunk(
 );
 
 export const deletePost = createAsyncThunk("posts/deletePost", async (data) => {
+ 
   const res = await axios
     .delete(
       `${process.env.REACT_APP_API_ENDPOINT}/posts/${data?.postId}`,
@@ -63,7 +65,13 @@ export const deletePost = createAsyncThunk("posts/deletePost", async (data) => {
           userId: data?.userId,
         },
       },
-      config
+      {
+        headers: {
+          Authorization: `SociableCat ${localStorage.getItem(
+            "sociableCat_userToken"
+          )}`,
+        },
+      }
     )
     .catch((err) => {
       if (err.response) {
@@ -91,10 +99,17 @@ export const deletePost = createAsyncThunk("posts/deletePost", async (data) => {
 export const getTimelinePosts = createAsyncThunk(
   "posts/getTimelinePosts",
   async (data) => {
+    
     const res = await axios
       .get(
         `${process.env.REACT_APP_API_ENDPOINT}/posts/timeline/${data?.userId}`,
-        config
+        {
+          headers: {
+            Authorization: `SociableCat ${localStorage.getItem(
+              "sociableCat_userToken"
+            )}`,
+          },
+        }
       )
       .catch((err) => {
         if (err.response) {

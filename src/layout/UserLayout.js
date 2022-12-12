@@ -9,10 +9,9 @@ const UserLayout = ({ children }) => {
   const postError = useSelector((state) => state.post.isUnauthorized);
 
   useEffect(() => {
-    console.log(userToken, "111aaa111", postError);
+    /* DOESNT navigate to login page if the session is timed out  */
     if (userToken.length < 15 || postError === "Unauthorized") {
       navigate("/login");
-      console.log("yey");
     }
   }, [userToken, postError, navigate, dispatch]);
 

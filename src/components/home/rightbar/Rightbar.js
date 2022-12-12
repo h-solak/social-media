@@ -17,7 +17,7 @@ const Rightbar = () => {
   ];
   return (
     <div
-      className="rightbar m-0 px-2 pt-3"
+      className="rightbar m-0 px-2 pt-1"
       style={{ position: "sticky", top: "60px" }}
     >
       {onlineFriends?.length > 0 ? (

@@ -19,7 +19,7 @@ const Feed = () => {
   }, [dispatch]);
 
   return (
-    <div className="w-100 flex-center pb-5 m-0 bg-color-white pt-3">
+    <div className="w-100 flex-center pb-5 m-0 bg-color-white pt-1">
       <div className="w-75-100">
         <Share />
         {timelinePosts?.length > 0 &&

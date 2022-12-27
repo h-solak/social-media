@@ -12,7 +12,7 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isFocusedOn, setIsFocusedOn] = useState(0);
-  const isRegistered = useSelector((state) => state.auth.isRegistered);
+  const { isRegistered, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     setTimeout(() => {
@@ -191,9 +191,13 @@ const Register = () => {
             <button
               type="submit"
               // disabled={isSubmitting}
-              className="w-75 register-btn py-2 border-0 color-white rounded-2 bg-color-green mt-5"
+              className="w-75 register-btn py-2 border-0 color-white rounded-2 bg-color-green mt-5 flex-center"
             >
-              Create an Account
+              {isLoading ? (
+                <span className="rotate-loader fs-5" />
+              ) : (
+                <span>Create an Account</span>
+              )}
             </button>
             <button
               className="w-75 py-2 text-dark border rounded-2 bg-color- mt-4"

@@ -85,7 +85,7 @@ export const loginUser = createAsyncThunk("login/loginUser", async (data) => {
 
 export const logOut = createAsyncThunk("auth/logout", async () => {
   // document.cookie = `token=0`;
-  return "";
+  return;
 });
 
 /* ---Slice-- */
@@ -96,10 +96,23 @@ export const authSlice = createSlice({
     user: {},
     isRegistered: "",
     userToken: "",
+    isLoading: false,
+  },
+  reducers: {
+    resetUser(state, action) {
+      return (state.user = {});
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.isRegistered = action.payload;
+      state.isLoading = false;
+    });
+    builder.addCase(registerUser.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(registerUser.rejected, (state) => {
+      state.isLoading = false;
     });
     builder.addCase(resetRegistered.fulfilled, (state, action) => {
       state.isRegistered = action.payload;
@@ -109,14 +122,20 @@ export const authSlice = createSlice({
       state.userToken = action.payload.userToken;
       localStorage.setItem("sociableCat_userToken", action.payload.userToken);
       // document.cookie = `token=${action.payload.userToken}`;
+      state.isLoading = false;
+    });
+    builder.addCase(loginUser.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(loginUser.rejected, (state, action) => {
+      state.isLoading = false;
     });
     builder.addCase(logOut.fulfilled, (state, action) => {
       localStorage.setItem("sociableCat_userToken", "");
-      localStorage.removeItem("persist:root");
       state.userToken = "";
       state.user = {};
     });
   },
 });
-
+// export const {resetUser} = authSlice.actions
 export default authSlice.reducer;

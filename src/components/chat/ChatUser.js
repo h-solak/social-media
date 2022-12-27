@@ -1,25 +1,56 @@
 import React from "react";
-
-const ChatUser = () => {
+import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import { getChat } from "../../redux/slices/chatSlice";
+const ChatUser = ({ chat }) => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
   return (
-    <div className="USERCOMPONENT wrapper chat-user py-1 pointer flex-center">
-      <div className="d-flex align-items-start justify-content-between mt-3 w-100 h-100 bg- px-3 ">
-        <div className="d-flex align-items-start gap-2">
+    <button
+      className="w-100 chat-user pointer py-3 border-bottom"
+      onClick={() =>
+        dispatch(
+          getChat({
+            username1: user.username,
+            username2: chat.usernames.filter((item) => item !== user.username),
+          })
+        )
+      }
+    >
+      <div className="d-flex align-items-start justify-content-between w-100 h-100 px-3 ">
+        <div className="d-flex align-items-center gap-2">
           <img
-            src={process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"}
+            src={`${process.env.REACT_APP_PUBLIC_FOLDER}/avatars/cat${chat.crrAvatar}.svg`}
             alt="user profile"
             width={50}
             height={50}
-            className="online-friend-pic rounded-circle object-fit-cover"
+            className="pointer"
           />
-          <div className="d-flex flex-column">
-            <span className="fw-bold fs-7">britisheep</span>
-            <span className="text-secondary fs-7">Max 20 characters...</span>
+          <div className="d-flex flex-column text-start">
+            <span className="fw-bold fs-7">
+              {chat.usernames.filter((item) => item !== user.username)}
+            </span>
+            <span
+              className="text-secondary fs-7"
+              style={{ wordBreak: "break-all" }}
+            >
+              {chat.lastMessage
+                ? `${
+                    chat?.lastMessage?.text.length > 15
+                      ? chat?.lastMessage?.text?.slice(0, 15)
+                      : chat?.lastMessage?.text
+                  }${chat?.lastMessage?.text.length > 15 ? "..." : ""}`
+                : chat.usernames[0] === user.username
+                ? "You created the chat"
+                : "They created the chat"}
+            </span>
           </div>
         </div>
-        <span className="text-secondary fs-8">12:49 AM</span>
+        <span className="text-secondary fs-9">
+          {moment(chat.updatedAt).format("dddd, hh:hh A")}
+        </span>
       </div>
-    </div>
+    </button>
   );
 };
 

@@ -3,28 +3,26 @@ import { Row, Col } from "reactstrap";
 import Share from "../../components/home/feed/Share";
 import Post from "../../components/home/feed/Post";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchProfile } from "../../redux/slices/userSlice";
+import {
+  fetchProfile,
+  followUser,
+  unfollowUser,
+} from "../../redux/slices/userSlice";
 import { getProfilePosts } from "../../redux/slices/postSlice";
-import { useParams } from "react-router-dom";
-import { MdPhotoCamera, MdLocationCity, MdHome } from "react-icons/md";
+import { useNavigate, useParams } from "react-router-dom";
+import { MdEdit, MdLocationCity, MdHome } from "react-icons/md";
 import { RiHomeHeartFill } from "react-icons/ri";
 import { FaBirthdayCake } from "react-icons/fa";
-const Profile = ({ crrProfile, user, isOtherProfile }) => {
-  const dispatch = useDispatch();
-  const crrProfileId = useParams();
-  const friends = [
-    "User",
-    "User",
-    "User",
-    "User",
-    "User",
-    "User",
-    "User",
-    "User",
-    "User",
-  ];
-  //max 9 tane arkadaş listelenecek, tamamını görmek için see all diyince modal açılacak
+import ChangeAvatar from "../../components/profile/ChangeAvatar";
+import moment from "moment";
+import PostLoader from "../../components/loaders/PostLoader";
 
+const Profile = ({ crrProfile, user, isOtherProfile, profileIsLoading }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { username } = useParams();
+  const [avatarModal, setAvatarModal] = useState(false);
+  const [pickedAvatar, setPickedAvatar] = useState(0);
   return (
     <div className="w-100">
       <div className="profile-top flex-center flex-column">
@@ -43,149 +41,207 @@ const Profile = ({ crrProfile, user, isOtherProfile }) => {
           style={{
             position: "relative",
             marginTop: "-100px",
+            borderRadius: "12px 12px 0px 0px",
           }}
         >
           <img
             src={
-              crrProfile?.coverPicture ||
-              process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"
+              crrProfile
+                ? `${process.env.REACT_APP_PUBLIC_FOLDER}/avatars/cat${crrProfile?.crrAvatar}.svg`
+                : `${process.env.REACT_APP_PUBLIC_FOLDER}/avatars/unknowncat.svg`
             }
             alt="user profile"
             width={150}
             height={150}
-            className="rounded-circle pointer changeable-profile-pic"
-            style={{ border: "3px solid #ecf0f1" }}
+            className="pointer changeable-profile-pic"
           />
-          <button
-            className="change-profile-pic text-end align-items-center justify-content-end"
-            style={{
-              bottom: "0px",
-              left: "0px",
-              zIndex: "9999",
-              width: "150px",
-            }}
-          >
-            <div className="cam-icon-wrapper p-2 rounded-circle border flex-center">
-              <MdPhotoCamera className="fs-4" />
-            </div>
-          </button>
+          {!isOtherProfile && crrProfile?.username ? (
+            <button
+              className="change-profile-pic text-end align-items-center justify-content-end"
+              style={{
+                bottom: "0px",
+                left: "0px",
+                zIndex: "999",
+                width: "150px",
+              }}
+              onClick={() => setAvatarModal(true)}
+            >
+              <div className="cam-icon-wrapper p-2 rounded-circle bg-white flex-center">
+                <MdEdit className="fs-4" />
+              </div>
+            </button>
+          ) : null}
         </div>
-        <span className="fw-bold fs-5 default">
-          {crrProfile?.username || "Cat in Disguise"}
+        <span className="fw-bold fs-6 default">
+          {crrProfile?.username ? (
+            `@${crrProfile?.username}`
+          ) : (
+            <p className="m-0 fw-bold fs-7 text-secondary">
+              ? <span className="fs-4">ฅ^•ﻌ•^ฅ</span> ?
+            </p>
+          )}
         </span>
-        <span className="fs-6 text-secondary flex-center gap-1 default pb-2">
-          {crrProfile?.desc || "Hi, there! I am using SociableCat."}
-        </span>
-        <div className="flex-center gap-3 py-2 border-top border-bottom">
-          <div className="flex-center flex-column gap-0 user-profile-stats">
-            <span className="fw-bold">{crrProfile?.posts?.length || "0"}</span>
-            <span className="fs-7">Posts</span>
-          </div>
-          <div className="flex-center flex-column gap-0 user-profile-stats">
-            <span className="fw-bold">
-              {crrProfile?.followers?.length || "0"}
+        {crrProfile && (
+          <>
+            <span className="fs-7 text-secondary flex-center gap-1 default pb-2">
+              {crrProfile?.desc || "Hi, there! I am using SociableCat."}
             </span>
-            <span className="fs-7">Followers</span>
-          </div>
-          <div className="flex-center flex-column gap-0 user-profile-stats">
-            <span className="fw-bold">
-              {crrProfile?.followings?.length || "0"}
-            </span>
-            <span className="fs-7">Following</span>
-          </div>
-        </div>
-      </div>
-      <Row className="m-0 p-0 mt-3">
-        {/* On smaller screen it has to be on the top, in large screens it is on the right */}
-        {/* <Col sm="12" md="0">
-          İnfo
-        </Col> */}
-        <Col sm="12" md="8" className="p-0 mb-5 px-5">
-          <Row className="m-0 p-0">
-            {!isOtherProfile ? (
-              <Col sm="12" className="p-0">
-                <Share />
-              </Col>
-            ) : null}
-            {crrProfile?.posts?.map((post, index) => (
-              <Col sm="12" className="p-0">
-                <Post key={index} postContent={post} />
-              </Col>
-            ))}
-          </Row>
-        </Col>
-        <Col
-          sm="12"
-          md="4"
-          className="profile-rightbar pt-3 px-2"
-          style={{ position: "sticky", top: "60px" }}
-        >
-          <Row className="m-0 p-0">
-            <Col sm="12" className="fw-600">
-              About
-            </Col>
-            <Col sm="12" className="flex-align-center gap-2 mt-2">
-              <MdLocationCity className="fs-5" />
-              <span>Istanbul</span>
-            </Col>
-            {/* <p className="flex-align-center gap-2">
-            <MdHome className="fs-5" />
-            <span>Adana</span>
-          </p> */}
-            <Col sm="12" className="flex-align-center gap-2 mt-2">
-              <RiHomeHeartFill className="fs-5" />
-              <span>Single</span>
-            </Col>
-            <Col sm="12" className="flex-align-center gap-2 mt-2">
-              <FaBirthdayCake className="" />
-              <span>01.09.2001</span>
-            </Col>
-            <Col sm="12" className="text-secondary fs-7 mt-2">
-              Member since 19.11.2022
-            </Col>
-            <Col sm="12" className="mt-3 pt-3 border-top fw-600 flex-between">
-              <p className="m-0 flex-align-center gap-1">
-                <span>Friends</span>{" "}
-                <span className="fs-8 text-secondary">(31)</span>
-              </p>
-              <button className="fs-7 hvr-underline fw-600">See All</button>
-            </Col>
-            {friends?.length > 0 ? (
-              <Row className="m-0 p-0">
-                {friends?.map((friend, index) => (
-                  <Col
-                    key={index}
-                    xs="0"
-                    md="4"
-                    className="p-0 mt-2 d-flex align-items-start flex-column"
+            {isOtherProfile && (
+              <div className="mb-3 flex-center gap-2">
+                {crrProfile?.followers?.includes(user?._id) ? (
+                  <button
+                    className="bg-color-bronze text-white rounded-3 px-2 py-1 fs-7 fw-600"
+                    style={{ width: "100px" }}
+                    onClick={() =>
+                      dispatch(
+                        unfollowUser({
+                          followingId: crrProfile?._id,
+                          userId: user?._id,
+                        })
+                      )
+                    }
+                    title="Unfollow"
                   >
-                    <img
-                      src={
-                        process.env.REACT_APP_PUBLIC_FOLDER +
-                        "/svg/noavatar.svg"
-                      }
-                      alt="user profile"
-                      width={100}
-                      height={100}
-                      className="rounded-2 object-fit-cover"
-                    />
-                    <span
-                      className="fs-8 text-start w-100"
-                      style={{ maxWidth: "100px" }}
-                    >
-                      {friend}
-                    </span>
-                  </Col>
-                ))}
-              </Row>
-            ) : (
-              <Col md="12" className="fs-7 text-secondary pt-3">
-                No friends found to list
-              </Col>
+                    Following
+                  </button>
+                ) : (
+                  <button
+                    className="bg-color-bronze text-white rounded-3 px-2 py-1 fs-7 fw-600"
+                    style={{ width: "100px" }}
+                    onClick={() =>
+                      dispatch(
+                        followUser({
+                          followingId: crrProfile?._id,
+                          userId: user?._id,
+                        })
+                      )
+                    }
+                  >
+                    Follow
+                  </button>
+                )}
+                <button
+                  className=" text-white rounded-3 px-2 py-1 fs-7 fw-600"
+                  style={{ width: "100px", background: "rgba(0,0,0,0.3)" }}
+                >
+                  Message
+                </button>
+              </div>
             )}
-          </Row>
-        </Col>
-      </Row>
+          </>
+        )}
+        {crrProfile && (
+          <div className="d-flex align-items-center gap-3 py-2 border-top border-bottom">
+            <div className="user-profile-stats flex-center flex-column gap-0 pointer">
+              <span className="fw-bold fs-7">
+                {crrProfile?.posts?.length || "0"}
+              </span>
+              <span className="fs-8">Posts</span>
+            </div>
+            <div className="user-profile-stats flex-center flex-column gap-0 pointer">
+              <span className="fw-bold fs-7">
+                {crrProfile?.followers?.length || "0"}
+              </span>
+              <span className="fs-8">Followers</span>
+            </div>
+            <div className="user-profile-stats flex-center flex-column gap-0 pointer">
+              <span className="fw-bold fs-7">
+                {crrProfile?.followings?.length || "0"}
+              </span>
+              <span className="fs-8">Followings</span>
+            </div>
+          </div>
+        )}
+      </div>
+      {crrProfile && (
+        <Row className="m-0 p-0 mt-5">
+          {/* On smaller screen it has to be on the top, in large screens it is on the right */}
+          {/* <Col sm="12" md="0">
+        İnfo
+      </Col> */}
+          <Col sm="12" md="8" className="pt-3 p-0 mb-5 px-4 px-sm-5">
+            <Row className="m-0 p-0">
+              {!isOtherProfile ? (
+                <Col sm="12" className="p-0">
+                  <Share />
+                </Col>
+              ) : null}
+              {!profileIsLoading ? (
+                crrProfile?.posts?.map((post, index) => (
+                  <Col sm="12" className="p-0" key={index}>
+                    <Post postContent={post} />
+                  </Col>
+                ))
+              ) : (
+                <PostLoader />
+              )}
+            </Row>
+          </Col>
+          <Col
+            sm="12"
+            md="4"
+            className="profile-rightbar pt-3 px-2"
+            style={{ position: "sticky", top: "60px" }}
+          >
+            <Row className="m-0 p-0">
+              <Col sm="12" className="fw-600 fs-7">
+                About
+              </Col>
+              <Col sm="12" className="flex-align-center gap-2 mt-2">
+                <MdLocationCity className="fs-5" />
+                <span className="fs-7">Istanbul</span>
+              </Col>
+              {/* <p className="flex-align-center gap-2">
+          <MdHome className="fs-5" />
+          <span>Adana</span>
+        </p> */}
+              <Col sm="12" className="flex-align-center gap-2 mt-2">
+                <RiHomeHeartFill className="fs-5" />
+                <span className="fs-7">Single</span>
+              </Col>
+              <Col sm="12" className="flex-align-center gap-2 mt-2">
+                <FaBirthdayCake className="" />
+                <span className="fs-7">01.09.2001</span>
+              </Col>
+              <Col sm="12" className="text-secondary fs-7 mt-2">
+                Joined {moment(crrProfile?.createdAt).fromNow()}
+              </Col>
+            </Row>
+          </Col>
+        </Row>
+      )}
+      {!crrProfile && (
+        <Row className="m-0 p-0 mt-5 pt-5 justify-content-center text-center">
+          <div className="flex-center flex-column gap-1">
+            <img
+              src={
+                process.env.REACT_APP_PUBLIC_FOLDER + "/svg/scratchingrope.svg"
+              }
+              alt="user profile"
+              width={75}
+              height={75}
+              className="rounded-2"
+            />
+            <p className="text-secondary mt-2">
+              There is no cat named <span className="fw-bold">{username}</span>{" "}
+              <br />
+              <button
+                className="color-bronze hvr-underline"
+                onClick={() => navigate("/profile/" + user?.username)}
+              >
+                Go Back
+              </button>
+            </p>
+          </div>
+        </Row>
+      )}
+      <ChangeAvatar
+        avatarModal={avatarModal}
+        setAvatarModal={setAvatarModal}
+        user={user}
+        pickedAvatar={pickedAvatar}
+        setPickedAvatar={setPickedAvatar}
+      />
     </div>
   );
 };

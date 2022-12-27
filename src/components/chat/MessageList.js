@@ -1,12 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import Message from "./Message";
-const MessageList = () => {
-  const messagesarr = [
-    1, 2, 3, 4, 4, 4, 5, 6, 7, 8, 9, 9, 9, 9, 10, 11, 12, 13, 14, 15, 16,
-  ];
-
+const MessageList = ({ messages, username1 }) => {
   useEffect(() => {
     bottomRef.current?.scrollIntoView();
+    /* Auto scroll to bottom of the chat when the chat is opend */
     //{ behavior: "smooth" } unnecessary?
   }, []);
 
@@ -14,14 +11,27 @@ const MessageList = () => {
 
   return (
     <div className="chat-message-list bg-white p-4 pt-3">
-      {messagesarr?.map((message, index) =>
-        message % 2 == 0 ? (
-          <Message key={index} isMyMessage={false} />
-        ) : (
-          <Message key={index} isMyMessage={true} />
+      {messages.length > 0 ? (
+        messages?.map((message, index) =>
+          message.username === username1 ? (
+            <Message
+              key={index}
+              text={message.text}
+              time={message.time}
+              isMyMessage={true}
+            />
+          ) : (
+            <Message
+              key={index}
+              text={message.text}
+              time={message.time}
+              isMyMessage={false}
+            />
+          )
         )
+      ) : (
+        <div className="h-100 flex-center">No Messages</div>
       )}
-
       <div ref={bottomRef}></div>
     </div>
   );

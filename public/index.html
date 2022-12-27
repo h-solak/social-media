@@ -1,65 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Follow, Post, Chat... Your favorite social media app!" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap" rel="stylesheet">
+    <meta
+      name="description"
+      content="Follow, Post, Chat... Your favorite social media app!"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="./assets/icons/favicon-96x96.png"
+    />
     <title>SociableCat</title>
     <!-- Loading Spinner Styling -->
     <style>
-        @font-face {
-            font-family: MontserratBold;
-            src: url(./assets/fonts/Montserrat-SemiBold.ttf);
+      @font-face {
+        font-family: MontserratBold;
+        src: url(./assets/fonts/Montserrat-SemiBold.ttf);
+      }
+
+      .loader {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        animation: blink 1s linear infinite;
+        transition: ease;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .loader > span {
+        font-family: "MontserratBold", sans-serif;
+        font-size: 24px;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 1;
         }
-        
-        .loader {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            animation: blink 1s linear infinite;
-            transition: ease;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            gap: 4px;
+        50% {
+          opacity: 0.3;
         }
-        
-        .loader>span {
-            font-family: 'MontserratBold', sans-serif;
-            font-size: 24px;
+        100% {
+          opacity: 1;
         }
-        
-        @keyframes blink {
-            0% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
-            100% {
-                opacity: 1;
-            }
-        }
+      }
     </style>
+  </head>
 
-</head>
-
-<body>
+  <body>
     <div id="root"></div>
 
     <!-- Loading Spinner Div -->
     <div class="loader-container">
-        <div class="loader">
-            <img src="./assets/svg/just-cat.svg" alt="Cat" width="50" height="50">
-            <span>SociableCat</span>
-        </div>
+      <div class="loader">
+        <img src="./assets/svg/just-cat.svg" alt="Cat" width="50" height="50" />
+        <span>SociableCat</span>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>

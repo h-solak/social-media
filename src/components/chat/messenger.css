@@ -1,16 +1,20 @@
-.chat-user-list,
+.chat-user-list-container,
 .chat-container {
   height: calc(100vh - 60px);
+}
+.chat-user-list {
   overflow-y: scroll;
+  height: calc(100vh - 120px);
 }
 
 .chat-user-list::-webkit-scrollbar {
   width: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .chat-user-list::-webkit-scrollbar-thumb {
   border-radius: 36px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .chat-user-list::-webkit-scrollbar-thumb:hover {

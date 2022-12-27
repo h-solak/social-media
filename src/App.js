@@ -46,7 +46,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route
-            path="/profile/:userId" //it will be /profile/:username
+            path="/profile/:username" //it will be /profile/:username
             element={
               <UserLayout>
                 <Profile />

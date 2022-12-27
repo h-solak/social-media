@@ -13,7 +13,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [isFocusedOn, setIsFocusedOn] = useState(0);
 
-  const { userToken } = useSelector((state) => state.auth);
+  const { userToken, isLoading } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if (userToken.length > 15) {
@@ -152,9 +152,13 @@ const Login = () => {
             <button
               type="submit"
               // disabled={isSubmitting}
-              className="w-75 login-btn py-2 border-0 color-white rounded-2 bg-color-green mt-5"
+              className="w-75 login-btn py-2 border-0 color-white rounded-2 bg-color-green mt-5 flex-center"
             >
-              Sign In
+              {isLoading ? (
+                <span className="rotate-loader fs-5" />
+              ) : (
+                <span>Sign In</span>
+              )}
             </button>
             <button
               className="w-75 py-2 text-dark border rounded-2 bg-color- mt-4"

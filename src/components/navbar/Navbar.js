@@ -56,7 +56,9 @@ const Navbar = () => {
               alt="Logo"
               width="30"
             />
-            <span className="logo-part fw-bold color-white">SociableCat</span>
+            <span className="d-none d-sm-block logo-part fw-bold color-white">
+              SociableCat
+            </span>
           </span>
         </Col>
         <Col
@@ -88,12 +90,12 @@ const Navbar = () => {
           xs="6"
           sm="8"
           md="3"
-          className="flex-align-center justify-content-end gap-3"
+          className="p-0 d-flex align-items-center justify-content-end gap-3"
         >
           {/* <FaUserFriends className="d-none d-md-block fs-3 color-white nav-icon" /> */}
-          <MdNotifications className="d-none d-md-block fs-3 color-white nav-icon" />
+          <MdNotifications className="fs-3 color-white nav-icon" />
           <MdChat
-            className="d-none d-md-block fs-4 color-white nav-icon"
+            className="fs-4 color-white nav-icon"
             onClick={() => navigate("/messenger")}
           />
           <Dropdown
@@ -103,26 +105,26 @@ const Navbar = () => {
             onMouseLeave={() => setDropdownOpen(false)}
             className="border-0"
           >
-            <DropdownToggle className="bg-transparent border-0">
-              <div className="nav-dropdown flex-center gap-2 pointer">
-                <span className="display-sm-md color-white fs-7">
-                  {user?.username || "User"}
+            <DropdownToggle className="p-0 border-0 bg-transparent">
+              <div className="flex-center gap-1 pointer rounded">
+                <span className="d-none d-sm-flex fs-7 fw-600">
+                  {"@" + user?.username || "User"}
                 </span>
-                <img
-                  src={
-                    process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"
-                  }
-                  alt="user profile"
-                  width={42}
-                  height={42}
-                  className="navbar-profile-pic pointer rounded-circle object-fit-cover"
-                />
+                <div className="rounded-circle flex-center">
+                  <img
+                    src={`${process.env.REACT_APP_PUBLIC_FOLDER}/avatars/cat${user?.crrAvatar}.svg`}
+                    alt="user profile"
+                    width={34}
+                    height={34}
+                    className="pointer"
+                  />
+                </div>
               </div>
             </DropdownToggle>
             <DropdownMenu className="">
               <DropdownItem
                 className="d-flex align-items-center gap-2"
-                onClick={() => navigate("/profile/" + user?._id)}
+                onClick={() => navigate("/profile/" + user?.username)}
               >
                 <IoPerson className="" style={{ fontSize: "18px" }} />
                 <span className="">Profile</span>

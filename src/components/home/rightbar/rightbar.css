@@ -1,46 +1,44 @@
 .rightbar {
-    height: calc(100vh - 60px);
-    overflow-y: scroll;
-    overflow: hidden;
+  height: calc(100vh - 60px);
+  overflow-y: scroll;
+  overflow: hidden;
 }
 
 .rightbar:hover {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 .rightbar::-webkit-scrollbar {
-    width: 7px;
+  width: 7px;
 }
 
 .rightbar::-webkit-scrollbar-track {
-    background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .rightbar::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 36px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 36px;
 }
 
 .rightbar-friend {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    gap: 0px;
-    padding: 12px 24px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 0px;
+  padding: 12px 24px;
+  cursor: pointer;
 }
 
 .rightbar-col,
 .rightbar-friend-col {
-    transition: 0.1s ease;
+  transition: 0.1s ease;
 }
-
 
 /* .rightbar-col:hover,
 .rightbar-friend-col:hover {
     background-color: rgba(110, 110, 110, 0.1);
 } */
-
 
 /* 
 .rightbar-col:active,

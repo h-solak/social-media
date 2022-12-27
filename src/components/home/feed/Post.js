@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./feed.css";
 import {
   Row,
@@ -11,7 +11,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { HiHeart } from "react-icons/hi";
+import { MdSend } from "react-icons/md";
 import {
   MdThumbUpAlt,
   MdThumbUpOffAlt,
@@ -29,18 +29,28 @@ import toast from "react-hot-toast";
 import darkToast from "../../../helpers/darkToast";
 import { format } from "timeago.js";
 import { useSelector, useDispatch } from "react-redux";
-import { deletePost } from "../../../redux/slices/postSlice";
+import { deletePost, likePost } from "../../../redux/slices/postSlice";
 
 const Post = ({ postContent }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [isLiked, setIsLiked] = useState(false); //for testing
+  const [like, setLike] = useState({});
   const [isCommentLiked, setIsCommentLiked] = useState(false); //for testing
   const [isCommentsOpen, setIsCommentsOpen] = useState(false); //for testing
   const [isBookmarked, setIsBookmarked] = useState(false); //for testing
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    /* This is for a faster experience - Slow internet will probably cause some bugs */
+    let newIsPostLiked = postContent?.likes?.includes(user?.username);
+    let newLikeCount = postContent?.likes?.length;
+    setLike({
+      isLiked: newIsPostLiked,
+      likeCount: newLikeCount,
+    });
+  }, [postContent]);
 
   const comments = [
     "Ahh... Sainz, you should drive it on the track, get out of the sand 😳 ",
@@ -49,23 +59,29 @@ const Post = ({ postContent }) => {
   ];
   return (
     <div
-      className="share w-100 mt-5 bg-white shadow"
+      className="share w-100 mb-5 bg-white shadow"
       style={{ borderRadius: "12px 12px 12px 12px" }}
     >
       <div className="w-100 pt-2 px-3 d-flex align-items-start flex-column">
         <div className="w-100 flex-between">
           <div className="flex-align-center gap-1">
             <img
-              src={process.env.REACT_APP_PUBLIC_FOLDER + "/svg/noavatar.svg"}
+              src={
+                postContent?.crrAvatar //this won't be needed since all posts will contain avatar data from now on
+                  ? `${process.env.REACT_APP_PUBLIC_FOLDER}/avatars/cat${postContent?.crrAvatar}.svg`
+                  : `${process.env.REACT_APP_PUBLIC_FOLDER}/avatars/cat0.svg`
+              }
               alt="user profile"
               width={45}
               height={45}
-              className="fs-8 rounded-circle pointer"
-              onClick={() => navigate("/profile/" + postContent?.userId)}
+              className="pointer"
+              onClick={() => navigate("/profile/" + postContent?.username)}
             />
             <div className="d-flex align-items-start flex-column px-2">
               <p className="m-0 fs-7 fw-600 default">
-                {postContent?.username || "User"}
+                <span className="fw-700">
+                  {"@" + postContent?.username || "User"}
+                </span>
                 {user?._id !== postContent?.userId && (
                   <button className="fs-8 fw-bold text-secondary hvr-underline">
                     following
@@ -94,7 +110,7 @@ const Post = ({ postContent }) => {
             <DropdownMenu className="">
               <DropdownItem
                 className="d-flex align-items-center gap-2"
-                onClick={() => navigate("/profile/" + postContent?.userId)}
+                onClick={() => navigate("/profile/" + postContent?.username)}
               >
                 {/* <IoPerson className="" style={{ fontSize: "18px" }} /> */}
                 <span className="fs-7">
@@ -144,14 +160,28 @@ const Post = ({ postContent }) => {
             <div className="flex-align-center gap-2">
               <button
                 className="flex-align-center gap-2 py-2 post-option pointer rounded-2"
-                onClick={() => setIsLiked(!isLiked)}
+                onClick={() => {
+                  dispatch(
+                    likePost({
+                      postId: postContent?._id,
+                      username: user?.username,
+                      operation: postContent?.likes?.includes(user?.username),
+                    })
+                  );
+                  setLike({
+                    likeCount: !like.isLiked
+                      ? like.likeCount + 1
+                      : like.likeCount - 1,
+                    isLiked: !like.isLiked,
+                  });
+                }}
               >
-                {isLiked ? (
+                {like.isLiked ? (
                   <MdThumbUpAlt className="fs-5 text text-primary" />
                 ) : (
                   <MdThumbUpOffAlt className="fs-5 text" />
                 )}
-                <span className="fs-7">{postContent?.likes?.length}</span>
+                <span className="fs-7">{like.likeCount}</span>
               </button>
               <button
                 className="flex-align-center gap-2 p-2 post-option pointer rounded-2"
@@ -217,6 +247,34 @@ const Post = ({ postContent }) => {
         </Col>
         {comments?.length > 0 && isCommentsOpen ? (
           <Row className="m-0 px-0 border-top py-2">
+            <Col
+              md="12"
+              className="m-0 px-3 d-flex align-items-center gap-2 py-2"
+            >
+              <img
+                src={
+                  user?.crrAvatar
+                    ? `${process.env.REACT_APP_PUBLIC_FOLDER}/avatars/cat${user?.crrAvatar}.svg`
+                    : `${process.env.REACT_APP_PUBLIC_FOLDER}/avatars/cat0.svg`
+                }
+                alt="user profile"
+                width={36}
+                height={36}
+                className={`pointer ${!isFocused && "opacity-50"}`}
+                onClick={() => navigate("/profile/" + user?.username)}
+              />
+              <textarea
+                rows="1"
+                className="fs-7 d-flex align-items-center w-100 border rounded-3 py-2 ps-1"
+                placeholder="Comment"
+                style={{ resize: "none" }}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+              />
+              <button className={`p-0 ${!isFocused && "opacity-50"}`}>
+                <MdSend className="fs-5" />
+              </button>
+            </Col>
             {comments?.map((comment, index) => (
               <Col
                 key={index}

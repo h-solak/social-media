@@ -17,13 +17,14 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const friends = [
-    "Hasan Solak",
-    "Charles LökLök",
-    "Serhio Periz",
-    "Meks Ferstapen",
-    "Lan Strol",
-    "Tırın Tırın Tırınının",
-    "Can Afacan Şaklaban",
+    "Eheheh",
+    "Eheheh",
+    "Eheheh",
+    "Eheheh",
+    "Eheheh",
+    "Eheheh",
+    "Eheheh",
+    "Eheheh",
   ];
   return (
     <div
@@ -68,7 +69,7 @@ const Sidebar = () => {
       <button
         className="w-100 p-0 mb-3 sidebar-col"
         onClick={() => {
-          navigate("/profile/" + user?._id);
+          navigate("/profile/" + user?.username);
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
       >
@@ -103,7 +104,7 @@ const Sidebar = () => {
                     style={{ backgroundColor: "rgb(63, 252, 63)" }}
                   ></div>
                 )}
-                <span>{friend}</span>
+                <span className="fw-600 fs-7">{friend}</span>
               </div>
             </button>
           ))}

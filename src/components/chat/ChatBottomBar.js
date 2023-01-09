@@ -9,13 +9,13 @@ import { sendMessage } from "../../redux/slices/chatSlice";
 const ChatBottomBar = ({ chatId, username1 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { messageIsSent } = useSelector((state) => state.chats);
+  const { crrChat, messageIsSent } = useSelector((state) => state.chats);
   const [messageText, setMessageText] = useState("");
   useEffect(() => {
     if (messageIsSent) {
       setMessageText("");
     }
-  }, [messageIsSent]);
+  }, [crrChat.messages]);
   return (
     <div className="chat-bottombar d-flex align-items-center justify-content-between gap-3 px-4">
       <div className="flex-center gap-2">

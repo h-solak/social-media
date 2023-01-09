@@ -75,26 +75,25 @@ export const likePost = createAsyncThunk("posts/likePost", async (data) => {
         errorToast(
           err.response.data?.errTitle ||
             err.response.data.desc ||
-            `The post couldn't be ${data?.operation ? "unliked" : "liked"}`
+            `Something went wrong!`
         );
         if (err.response.data?.errTitle === "Invalid Token") {
           return "Invalid Token";
         }
       } else if (err.request) {
         //no response receieved
-        errorToast(
-          `The post couldn't be ${data?.operation ? "unliked" : "liked"}`
-        );
+        errorToast(`Something went wrong!`);
         return "";
       } else {
         //Something happened in setting up the request that triggered an Error
-        errorToast(
-          `The post couldn't be ${data?.operation ? "unliked" : "liked"}`
-        );
+        errorToast(`Something went wrong!`);
       }
     });
   // darkToast(res.data.desc, <TiTick className="color-success fs-5" />);
-  return res.data;
+  return {
+    postId: res?.data?.postId,
+    newLikes: res?.data?.newLikes,
+  };
 });
 
 export const deletePost = createAsyncThunk(
@@ -231,6 +230,19 @@ export const postSlice = createSlice({
     });
     builder.addCase(resetPostIsShared.fulfilled, (state) => {
       state.postIsShared = false;
+    });
+    builder.addCase(likePost.fulfilled, (state, action) => {
+      const posts = state.timelinePosts;
+      const newPosts = posts.map((item) => {
+        //updated timeline posts after liking
+        if (item._id === action.payload.postId) {
+          return { ...item, likes: action.payload.newLikes };
+        } else {
+          return item;
+        }
+      });
+      state.timelinePosts = newPosts;
+      // state. = false;
     });
   },
 });

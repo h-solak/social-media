@@ -17,7 +17,7 @@ import { HiOutlineLogout, HiOutlineUser } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { IoLogOut, IoSettingsSharp, IoPerson } from "react-icons/io5";
-import { logOut } from "../../redux/slices/authSlice";
+import { logout, resetUser } from "../../redux/slices/authSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -137,7 +137,8 @@ const Navbar = () => {
               <DropdownItem
                 className="d-flex align-items-center gap-2"
                 onClick={() => {
-                  dispatch(logOut());
+                  dispatch(resetUser());
+                  dispatch(logout());
                   navigate("/login");
                 }}
               >

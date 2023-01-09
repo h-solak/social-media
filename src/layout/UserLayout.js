@@ -2,8 +2,7 @@ import React, { useEffect } from "react";
 import Navbar from "../components/navbar/Navbar";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { logOut } from "../redux/slices/authSlice";
-import { resetStore } from "../redux/store";
+import { resetUser, logout } from "../redux/slices/authSlice";
 const UserLayout = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -14,7 +13,8 @@ const UserLayout = ({ children }) => {
     /* DOESNT navigate to login page if the session is timed out  */
     setTimeout(() => {
       if (!userToken || !localStorage.getItem("sociableCat_userToken")) {
-        dispatch(logOut());
+        dispatch(resetUser());
+        dispatch(logout());
         navigate("/login");
       }
     }, 100);

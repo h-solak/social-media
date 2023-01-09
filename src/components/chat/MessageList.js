@@ -11,7 +11,7 @@ const MessageList = ({ messages, username1 }) => {
 
   return (
     <div className="chat-message-list bg-white p-4 pt-3">
-      {messages.length > 0 ? (
+      {messages?.length > 0 ? (
         messages?.map((message, index) =>
           message.username === username1 ? (
             <Message

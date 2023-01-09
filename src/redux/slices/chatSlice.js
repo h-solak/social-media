@@ -119,7 +119,7 @@ export const sendMessage = createAsyncThunk(
           errorToast("Something went wrong!", "top-center");
         }
       });
-    return true;
+    return res.data;
   }
 );
 
@@ -148,6 +148,11 @@ export const chatSlice = createSlice({
       state.chatSuggestions = action.payload;
     });
     builder.addCase(sendMessage.fulfilled, (state, action) => {
+      const newCrrChat = {
+        ...state.crrChat,
+        messages: action.payload.newMessages,
+      };
+      state.crrChat = newCrrChat;
       state.messageIsSending = false;
       state.messageIsSent = true;
     });

@@ -1,5 +1,5 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
   Col,
@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
+import { resetUser, updateUser } from "../../redux/slices/authSlice";
 import { changeAvatar } from "../../redux/slices/userSlice";
 import "./profileComponent.css";
 
@@ -20,7 +21,6 @@ const ChangeAvatar = ({
   setPickedAvatar,
 }) => {
   const dispatch = useDispatch();
-
   const handleChangeAvatar = () => {
     dispatch(
       changeAvatar({
@@ -29,6 +29,7 @@ const ChangeAvatar = ({
       })
     );
     setAvatarModal(false);
+    dispatch(updateUser({ action: "crrAvatar", data: pickedAvatar }));
   };
 
   return (

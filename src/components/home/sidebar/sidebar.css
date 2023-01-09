@@ -1,6 +1,11 @@
 .sidebar {
   height: calc(100vh - 60px);
   overflow-y: scroll;
+  overflow: hidden;
+}
+
+.sidebar:hover {
+  overflow-y: overlay;
 }
 
 .sidebar::-webkit-scrollbar {

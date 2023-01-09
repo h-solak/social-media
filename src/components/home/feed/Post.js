@@ -37,19 +37,12 @@ const Post = ({ postContent }) => {
   const user = useSelector((state) => state.auth.user);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
-  const [like, setLike] = useState({});
   const [isCommentLiked, setIsCommentLiked] = useState(false); //for testing
   const [isCommentsOpen, setIsCommentsOpen] = useState(false); //for testing
   const [isBookmarked, setIsBookmarked] = useState(false); //for testing
 
   useEffect(() => {
-    /* This is for a faster experience - Slow internet will probably cause some bugs */
-    let newIsPostLiked = postContent?.likes?.includes(user?.username);
-    let newLikeCount = postContent?.likes?.length;
-    setLike({
-      isLiked: newIsPostLiked,
-      likeCount: newLikeCount,
-    });
+    console.log(postContent?.likes?.includes(user?._id));
   }, [postContent]);
 
   const comments = [
@@ -168,20 +161,14 @@ const Post = ({ postContent }) => {
                       operation: postContent?.likes?.includes(user?.username),
                     })
                   );
-                  setLike({
-                    likeCount: !like.isLiked
-                      ? like.likeCount + 1
-                      : like.likeCount - 1,
-                    isLiked: !like.isLiked,
-                  });
                 }}
               >
-                {like.isLiked ? (
+                {postContent?.likes?.includes(user?.username) ? (
                   <MdThumbUpAlt className="fs-5 text text-primary" />
                 ) : (
                   <MdThumbUpOffAlt className="fs-5 text" />
                 )}
-                <span className="fs-7">{like.likeCount}</span>
+                <span className="fs-7">{postContent?.likes?.length}</span>
               </button>
               <button
                 className="flex-align-center gap-2 p-2 post-option pointer rounded-2"

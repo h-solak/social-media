@@ -2,12 +2,18 @@ import React, { useState, useEffect } from "react";
 import "./rightbar.css";
 import { Row, Col, Input } from "reactstrap";
 import { GiCat } from "react-icons/gi";
-import { FaRegUserCircle, FaSearch, FaUserFriends } from "react-icons/fa";
+import {
+  FaQuestion,
+  FaRegUserCircle,
+  FaSearch,
+  FaUserFriends,
+} from "react-icons/fa";
 import { MdNotifications, MdChat } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { followUser, getSuggestedUsers } from "../../../redux/slices/userSlice";
 import SuggestionsLoader from "../../loaders/SuggestionsLoader";
+import axios from "axios";
 
 const Rightbar = () => {
   const navigate = useNavigate();
@@ -16,6 +22,9 @@ const Rightbar = () => {
   const { suggestedUsers, suggestedUsersIsLoading } = useSelector(
     (state) => state.users
   );
+  const [factIsLoading, setFactIsLoading] = useState(false);
+  // const [catPic, setCatPic] = useState();
+  const [catFact, setCatFact] = useState({});
   const onlineFriends = [
     "Hasan Solak",
     "Charles LökLök",
@@ -24,11 +33,20 @@ const Rightbar = () => {
     "Lan Strol",
   ];
   useEffect(() => {
+    setFactIsLoading(true);
     dispatch(
       getSuggestedUsers({
         userId: user._id,
       })
     );
+    axios
+      .get("https://catfact.ninja/fact?maxLength='30'")
+      .then((res) => setCatFact(res.data))
+      .finally(() => setFactIsLoading(false));
+    // axios
+    //   .get("https://api.thecatapi.com/v1/images/search")
+    //   .then((res) => setCatPic(res.data[0].url))
+    //   .finally(() => setTimeout(() => setFactIsLoading(false), 2000));
   }, []);
   return (
     <div
@@ -86,11 +104,37 @@ const Rightbar = () => {
           ) : (
             <SuggestionsLoader />
           )}
-          {/* <a className="rightbar-friend fs-7">
-            <span>See More...</span>
-          </a> */}
         </>
       ) : null}
+      {!factIsLoading ? (
+        <div
+          className={`${
+            suggestedUsers?.length > 0 ? "mt-4" : "mt-0"
+          } d-flex justify-content-center flex-column w-75`}
+          style={{ padding: "8px 20px" }}
+        >
+          {!suggestedUsers?.length > 0 ? (
+            <span className="fs-8 fw-600 text-secondary">Did you know?</span>
+          ) : null}
+          <div
+            className="d-flex align-items-center flex-column text-center rounded-3 py-2 px-1"
+            style={{ border: "2px solid rgba(0,0,0,0.1)" }}
+          >
+            <img
+              src={`${process.env.REACT_APP_PUBLIC_FOLDER}/svg/boxcat.svg`}
+              alt="user profile"
+              width={90}
+            />
+            <p className="m-0 fs-8">
+              <span className="fs-7 fw-bold">Random Cat Fact</span>
+              <br />
+              {catFact.fact}
+            </p>
+          </div>
+        </div>
+      ) : (
+        "Loading..."
+      )}
     </div>
   );
 };

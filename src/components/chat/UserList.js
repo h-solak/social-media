@@ -44,9 +44,11 @@ const ChatUserList = ({ tab, setTab }) => {
         <div className="scrollable chat-user-list">
           {tab === 0 ? (
             <>
-              {chatList?.map((chat, index) => (
-                <ChatUser key={index} chat={chat} />
-              ))}
+              {chatList?.length >= 1
+                ? chatList?.map((chat, index) => (
+                    <ChatUser key={index} chat={chat} />
+                  ))
+                : null}
               <div className="flex-center border-bottom">
                 <button
                   className="w-100 py-4 p-0 color-bronze default-hvr"

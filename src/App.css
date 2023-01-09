@@ -236,7 +236,7 @@ button {
 /*----------------Scrollbar----------------*/
 
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 8px;
   height: 12px;
 }
 

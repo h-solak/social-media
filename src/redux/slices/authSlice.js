@@ -83,11 +83,6 @@ export const loginUser = createAsyncThunk("login/loginUser", async (data) => {
   };
 });
 
-export const logOut = createAsyncThunk("auth/logout", async () => {
-  // document.cookie = `token=0`;
-  return;
-});
-
 /* ---Slice-- */
 
 export const authSlice = createSlice({
@@ -99,8 +94,27 @@ export const authSlice = createSlice({
     isLoading: false,
   },
   reducers: {
+    logout(state, action) {
+      //reset store
+    },
     resetUser(state, action) {
-      return (state.user = {});
+      state.user = {};
+      state.userToken = "";
+      localStorage.setItem("sociableCat_userToken", "");
+    },
+    updateUser(state, action) {
+      switch (action.payload.action) {
+        case "crrAvatar":
+          state.user = { ...state.user, crrAvatar: action.payload.data };
+        case "follow":
+          state.user = {
+            ...state.user,
+            followings: state.user?.followings?.includes(action.payload.data)
+              ? state.user.followings.push(action.payload.data)
+              : null,
+          };
+          console.log(state.user);
+      }
     },
   },
   extraReducers: (builder) => {
@@ -130,12 +144,7 @@ export const authSlice = createSlice({
     builder.addCase(loginUser.rejected, (state, action) => {
       state.isLoading = false;
     });
-    builder.addCase(logOut.fulfilled, (state, action) => {
-      localStorage.setItem("sociableCat_userToken", "");
-      state.userToken = "";
-      state.user = {};
-    });
   },
 });
-// export const {resetUser} = authSlice.actions
+export const { resetUser, updateUser, logout } = authSlice.actions;
 export default authSlice.reducer;

@@ -22,9 +22,6 @@ const Index = () => {
       })
     );
   }, []);
-  useEffect(() => {
-    console.log(crrChat);
-  }, [crrChat]);
 
   return (
     <>
@@ -52,7 +49,11 @@ const Index = () => {
               height={125}
               className="pointer"
             />
-            <span>We got your cat, go socialize now.</span>
+            <p className="m-0 text-center">
+              We got your cat covered, go socialize now.
+              <br />
+              Have a <span className="fst-italic">mice</span> day.
+            </p>
           </div>
         </Col>
       )}

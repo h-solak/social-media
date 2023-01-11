@@ -28,11 +28,11 @@ const PostLoader = () => {
         </div>
         <span
           className="loader-bg rounded-3 mt-3 blink-1500ms"
-          style={{ height: "12px", width: "350px" }}
+          style={{ height: "12px", width: "90%" }}
         ></span>
         <span
           className="loader-bg rounded-3 mt-3 blink-1500ms"
-          style={{ height: "12px", width: "350px" }}
+          style={{ height: "12px", width: "60%" }}
         ></span>
       </div>
     </div>

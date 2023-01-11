@@ -20,7 +20,10 @@ export const fetchProfile = createAsyncThunk(
           },
         }
       );
-      return res.data.data;
+      return {
+        data: res.data.data,
+        error: res === "Invalid Token" ? res : null,
+      };
     } catch (err) {
       // custom error
     }
@@ -122,7 +125,7 @@ export const unfollowUser = createAsyncThunk(
         }
       });
     darkToast(res.data.desc, <TiUserDelete className="color-white fs-5" />);
-    return res.data;
+    return res?.data?.unfollowedUser;
   }
 );
 
@@ -177,11 +180,16 @@ export const userSlice = createSlice({
     profileIsLoading: false,
     suggestedUsers: {},
     suggestedUsersIsLoading: false,
+    userUnfollowed: "",
+    usersAuthError: false,
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProfile.fulfilled, (state, action) => {
-      state.crrProfile = action.payload;
+      state.crrProfile = action.payload?.data;
       state.profileIsLoading = false;
+      if (action.payload?.error === "Invalid Token") {
+        state.usersAuthError = true;
+      }
     });
     builder.addCase(fetchProfile.pending, (state) => {
       state.profileIsLoading = true;
@@ -201,6 +209,9 @@ export const userSlice = createSlice({
     });
     builder.addCase(changeAvatar.fulfilled, (state, action) => {
       state.crrProfile.crrAvatar = action.payload;
+    });
+    builder.addCase(unfollowUser.fulfilled, (state, action) => {
+      state.userUnfollowed = action.payload;
     });
   },
 });

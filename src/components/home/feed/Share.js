@@ -1,9 +1,23 @@
 import React, { useState, useEffect } from "react";
 import "./feed.css";
-import { Row, Col, Input, Button } from "reactstrap";
+import {
+  Row,
+  Col,
+  Input,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+} from "reactstrap";
 import { GiCat } from "react-icons/gi";
-import { FaPaw } from "react-icons/fa";
-import { MdPhotoLibrary, MdLocationPin, MdEmojiEmotions } from "react-icons/md";
+import { FaPaw, FaSearch } from "react-icons/fa";
+import {
+  MdPhotoLibrary,
+  MdLibraryMusic,
+  MdEmojiEmotions,
+  MdSearch,
+} from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -12,7 +26,7 @@ import {
   sharePost,
 } from "../../../redux/slices/postSlice";
 import { fetchProfile } from "../../../redux/slices/userSlice";
-
+import axios from "axios";
 const Share = () => {
   const { username } = useParams();
   const dispatch = useDispatch();
@@ -21,6 +35,30 @@ const Share = () => {
   const { postIsShared, postIsSharing } = useSelector((state) => state.post);
   const [isFocused, setIsFocused] = useState(false);
   const [postText, setPostText] = useState("");
+  const [musicModal, setMusicModal] = useState(false);
+  const [trackSearchText, setTrackSearchText] = useState("");
+  const [selectedTrackId, setSelectedTrackId] = useState("");
+
+  // const selectTrack = () => {
+  //   const options = {
+  //     method: "GET",
+  //     url: "https://spotify-scraper.p.rapidapi.com/v1/track/download/soundcloud",
+  //     params: { track: trackSearchText },
+  //     headers: {
+  //       "X-RapidAPI-Key": "e2e8732dcbmsh9fb102907cdb62ep17ad14jsn46f746729c89",
+  //       "X-RapidAPI-Host": "spotify-scraper.p.rapidapi.com",
+  //     },
+  //   };
+
+  //   axios
+  //     .request(options)
+  //     .then(function (response) {
+  //       console.log(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.error(error);
+  //     });
+  // };
 
   const handleSharePost = () => {
     if (postText !== "") {
@@ -66,7 +104,9 @@ const Share = () => {
           name="post-text"
           rows="3"
           placeholder={
-            !isFocused ? "So, what is on your mind?" : "Tell us about it..."
+            !isFocused
+              ? `What is on your mind, ${user?.username}?`
+              : "Tail us about it..."
           }
           className="mt-2 border-0 w-100 px-0 ps-2 border-bottom"
           style={{ resize: "none" }}
@@ -76,21 +116,32 @@ const Share = () => {
           onChange={(e) => setPostText(e.target.value)}
         />
       </div>
+      {/* <iframe
+        className="p-0 ps-5 pe-4 mt-2"
+        style={{ borderRadius: "12px" }}
+        src={`https://open.spotify.com/embed/track/${"2Zw3HNjaNV42LnQ2uY5JQs"}?utm_source=generator`}
+        width="100%"
+        height="80"
+        loading="lazy"
+      ></iframe> */}
       <Row className="m-0 p-0">
-        <Col md="12">
-          <div className="flex-align-center justify-content-between px-0 px-md-2 ps-md-4 pt-2 pb-2 w-100">
+        <Col md="12" className="p-0">
+          <div className="flex-align-center justify-content-between px-0 ps-md-5 pe-md-4 pt-2 pb-2 w-100">
             <div className="flex-align-center">
               <button className="share-option-btn d-flex align-items-center justify-content-center gap-1 p-2 pointer rounded-2">
                 <MdPhotoLibrary className="fs-4" />
                 <span className="display-sm-md fs-7">Photo</span>
               </button>
               <button className="share-option-btn d-flex align-items-center justify-content-center gap-1 p-2 pointer rounded-2">
-                <MdLocationPin className="fs-4" />
-                <span className="display-sm-md fs-7">Location</span>
-              </button>
-              <button className="share-option-btn d-flex align-items-center justify-content-center gap-1 p-2 pointer rounded-2">
                 <MdEmojiEmotions className="fs-4" />
-                <span className="display-sm-md fs-7">Feelings</span>
+                <span className="display-sm-md fs-7">Emojis</span>
+              </button>
+              <button
+                className="share-option-btn d-flex align-items-center justify-content-center gap-1 p-2 pointer rounded-2"
+                // onClick={() => setMusicModal(true)}
+              >
+                <MdLibraryMusic className="fs-4" />
+                <span className="display-sm-md fs-7">Music</span>
               </button>
             </div>
             {postText.length > 0 ? (
@@ -131,6 +182,38 @@ const Share = () => {
           </div>
         </Col>
       </Row>
+      {/* <Modal
+        isOpen={musicModal}
+        toggle={() => setMusicModal(!musicModal)}
+        style={{ zIndex: "9999" }}
+        centered
+      >
+        <ModalHeader
+          toggle={() => setMusicModal(!musicModal)}
+          className="pb-2 color-bronze"
+        >
+          <span className="fw-600">Select Music</span>
+        </ModalHeader>
+        <ModalBody className="py-5">
+          <span className="fs-7 text-secondary">Find your song</span>
+          <div className="d-flex align-items-center">
+            <input
+              className="border py-1 px-2 w-100"
+              placeholder="Chances - The Strokes"
+              value={trackSearchText}
+              onChange={(e) => setTrackSearchText(e.target.value)}
+              style={{ borderRadius: "8px 0px 0px 8px" }}
+            />
+            <button
+              className="m-0 bg-color-bronze color-white py-1 px-3"
+              style={{ borderRadius: " 0px 8px 8px 0px" }}
+              onClick={selectTrack}
+            >
+              <FaSearch />
+            </button>
+          </div>
+        </ModalBody>
+      </Modal> */}
     </div>
   );
 };

@@ -9,7 +9,7 @@ import {
   ModalBody,
   ModalFooter,
 } from "reactstrap";
-import { resetUser, updateUser } from "../../redux/slices/authSlice";
+import { updateUser } from "../../redux/slices/authSlice";
 import { changeAvatar } from "../../redux/slices/userSlice";
 import "./profileComponent.css";
 

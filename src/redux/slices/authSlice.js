@@ -20,7 +20,6 @@ export const registerUser = createAsyncThunk(
       .catch((err) => {
         if (err.response) {
           //server responded with a status code
-          console.log(err.response);
           if (err.response.data.keyValue.email) {
             errorToast("This email is already in use");
           } else if (err.response.data.keyValue.username) {
@@ -95,25 +94,34 @@ export const authSlice = createSlice({
   },
   reducers: {
     logout(state, action) {
-      //reset store
+      //for resetting store
     },
     resetUser(state, action) {
       state.user = {};
       state.userToken = "";
       localStorage.setItem("sociableCat_userToken", "");
     },
+    //Updating front-end data after backend is changed
     updateUser(state, action) {
       switch (action.payload.action) {
         case "crrAvatar":
           state.user = { ...state.user, crrAvatar: action.payload.data };
-        case "follow":
-          state.user = {
-            ...state.user,
-            followings: state.user?.followings?.includes(action.payload.data)
-              ? state.user.followings.push(action.payload.data)
-              : null,
-          };
-          console.log(state.user);
+        // case "follow": HATAAAAAAAAA VARRRRRRRRRRRRRRRRRRRRRR
+        //   state.user = {
+        //     ...state.user,
+        //     followings: state.user?.followings?.includes(action.payload.data)
+        //       ? null
+        //       : state.user.followings.push(action.payload.data),
+        //   };
+        // case "unfollow":
+        //   state.user = {
+        //     ...state.user,
+        //     followings: state.user?.followings?.includes(action.payload.data)
+        //       ? state.user.followings.filter(
+        //           (item) => item !== action.payload.data
+        //         )
+        //       : null,
+        //   };
       }
     },
   },

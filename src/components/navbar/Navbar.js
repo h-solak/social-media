@@ -17,7 +17,7 @@ import { HiOutlineLogout, HiOutlineUser } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { IoLogOut, IoSettingsSharp, IoPerson } from "react-icons/io5";
-import { logout, resetUser } from "../../redux/slices/authSlice";
+import { logout } from "../../redux/slices/authSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ const Navbar = () => {
         </div>
       </Col> */}
         <Col
-          xs="6"
+          xs="8"
           sm="4"
           md="3"
           className="p-0 logo flex-align-center justify-content-start pointer"
@@ -56,9 +56,7 @@ const Navbar = () => {
               alt="Logo"
               width="30"
             />
-            <span className="d-none d-sm-block logo-part fw-bold color-white">
-              SociableCat
-            </span>
+            <span className="logo-part fw-bold color-white">SociableCat</span>
           </span>
         </Col>
         <Col
@@ -87,15 +85,15 @@ const Navbar = () => {
           </div>
         </Col>
         <Col
-          xs="6"
+          xs="4"
           sm="8"
           md="3"
           className="p-0 d-flex align-items-center justify-content-end gap-3"
         >
           {/* <FaUserFriends className="d-none d-md-block fs-3 color-white nav-icon" /> */}
-          <MdNotifications className="fs-3 color-white nav-icon" />
+          <MdNotifications className="d-none d-sm-block fs-3 color-white nav-icon" />
           <MdChat
-            className="fs-4 color-white nav-icon"
+            className="d-none d-sm-block fs-4 color-white nav-icon"
             onClick={() => navigate("/messenger")}
           />
           <Dropdown
@@ -107,7 +105,7 @@ const Navbar = () => {
           >
             <DropdownToggle className="p-0 border-0 bg-transparent">
               <div className="flex-center gap-1 pointer rounded">
-                <span className="d-none d-sm-flex fs-7 fw-600">
+                <span className="d-none d-sm-block fs-7 fw-600">
                   {"@" + user?.username || "User"}
                 </span>
                 <div className="rounded-circle flex-center">
@@ -137,7 +135,6 @@ const Navbar = () => {
               <DropdownItem
                 className="d-flex align-items-center gap-2"
                 onClick={() => {
-                  dispatch(resetUser());
                   dispatch(logout());
                   navigate("/login");
                 }}

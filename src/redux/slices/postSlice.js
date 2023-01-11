@@ -161,7 +161,7 @@ export const getTimelinePosts = createAsyncThunk(
               "Couldn't reach timeline posts."
           );
           if (err.response.data?.errTitle === "Invalid Token") {
-            return "Invalid Token";
+            return err.response.data?.errTitle;
           }
           return err.response.data?.errTitle;
         } else if (err.request) {
@@ -172,7 +172,10 @@ export const getTimelinePosts = createAsyncThunk(
           errorToast("Couldn't reach timeline posts.");
         }
       });
-    return res?.data?.posts;
+    return {
+      data: res?.data?.posts,
+      error: res === "Invalid Token" ? res : null,
+    };
   }
 );
 
@@ -196,12 +199,11 @@ export const postSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getTimelinePosts.fulfilled, (state, action) => {
-      // if(!action.payload){
-      //   localStorage.removeItem("sociableCat_userToken")
-      //   state.postAuthError = true;
-      // }
-      state.timelinePosts = action.payload;
+      state.timelinePosts = action.payload?.data;
       state.timelineIsLoading = false;
+      if (action.payload?.error === "Invalid Token") {
+        state.postAuthError = true;
+      }
     });
     builder.addCase(getTimelinePosts.pending, (state) => {
       state.timelineIsLoading = true;
@@ -209,15 +211,6 @@ export const postSlice = createSlice({
     builder.addCase(getTimelinePosts.rejected, (state) => {
       state.timelineIsLoading = false;
     });
-    // builder.addCase(likePost.fulfilled, (state, action) => {
-    //   /*
-    // "actionType": "unlike",
-    // "postId": "639f905f12a5ad1accba43f4",
-    // "username": "test2",
-    // "desc": "The post has been unliked successfully!"
-
-    //   */
-    // });
     builder.addCase(sharePost.fulfilled, (state, action) => {
       state.postIsSharing = false;
       state.postIsShared = true;

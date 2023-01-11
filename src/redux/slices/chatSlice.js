@@ -132,11 +132,11 @@ export const chatSlice = createSlice({
     messageIsSending: false,
     messageIsSent: false,
   },
-  // reducers: {
-  //   resetUser(state, action) {
-  //     return (state.user = {});
-  //   },
-  // },
+  reducers: {
+    closeCrrChat(state, action) {
+      state.crrChat = {};
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getChatList.fulfilled, (state, action) => {
       state.chatList = action.payload;
@@ -164,4 +164,5 @@ export const chatSlice = createSlice({
     });
   },
 });
+export const { closeCrrChat } = chatSlice.actions;
 export default chatSlice.reducer;

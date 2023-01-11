@@ -41,7 +41,6 @@ const Feed = () => {
               <PostLoader />
             </>
           )}
-
           {timelinePosts?.length > 3 ? (
             <p
               className="b-0 text-center text-secondary fs-7 default"
@@ -90,8 +89,10 @@ const Feed = () => {
                     : { marginTop: "100px" }
                 }
               >
-                Looks like there is nothing{" "}
-                {!timelinePosts || timelinePosts?.length === 0 ? null : "else"}
+                Looks like there is nothing
+                {!timelinePosts || timelinePosts?.length === 0
+                  ? null
+                  : " else"}{" "}
                 to see. <br />
                 <button
                   className="color-bronze hvr-underline"

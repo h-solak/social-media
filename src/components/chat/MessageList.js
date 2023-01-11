@@ -3,9 +3,8 @@ import Message from "./Message";
 const MessageList = ({ messages, username1 }) => {
   useEffect(() => {
     bottomRef.current?.scrollIntoView();
-    /* Auto scroll to bottom of the chat when the chat is opend */
-    //{ behavior: "smooth" } unnecessary?
-  }, []);
+    /* Auto scroll to the bottom of the chat when the chat is opened & new message has arrived */
+  }, [messages]);
 
   const bottomRef = useRef(null);
 

@@ -4,6 +4,7 @@ import { Row, Col } from "reactstrap";
 import RightBar from "../../components/home/rightbar/Rightbar";
 import Feed from "../../components/home/feed";
 import Sidebar from "../../components/home/sidebar/Sidebar";
+import MobileBottombar from "../../components/home/mobileBottombar";
 const Home = () => {
   useEffect(() => {
     window.scrollTo({ top: 0 });
@@ -11,6 +12,8 @@ const Home = () => {
   return (
     <Col xs="12" sm="12" className="home-container p-0 m-0">
       <Row className="m-0 p-0 justify-content-start h-100">
+        {/* Bottombar for mobile */}
+        <MobileBottombar />
         <Col xs="0" sm="3" md="3" className="d-none d-sm-block p-0">
           <Sidebar />
         </Col>

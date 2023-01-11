@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchProfile } from "../../redux/slices/userSlice";
 import { getProfilePosts } from "../../redux/slices/postSlice";
 import { useParams } from "react-router-dom";
+import MobileBottombar from "../../components/home/mobileBottombar";
 const IndexProfile = () => {
   const dispatch = useDispatch();
   const crrProfileUsername = useParams();
@@ -25,6 +26,8 @@ const IndexProfile = () => {
       style={{ minHeight: "150vh" }}
     >
       <Row className="m-0 p-0 justify-content-start h-100">
+        {/* Bottombar for mobile */}
+        <MobileBottombar />
         <Col sm="0" md="3" className="d-none d-md-block p-0">
           <Sidebar />
         </Col>

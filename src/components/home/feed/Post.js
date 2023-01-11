@@ -41,10 +41,6 @@ const Post = ({ postContent }) => {
   const [isCommentsOpen, setIsCommentsOpen] = useState(false); //for testing
   const [isBookmarked, setIsBookmarked] = useState(false); //for testing
 
-  useEffect(() => {
-    console.log(postContent?.likes?.includes(user?._id));
-  }, [postContent]);
-
   const comments = [
     "Ahh... Sainz, you should drive it on the track, get out of the sand 😳 ",
     "We will comeback stronger! 💪💪💪",
@@ -137,6 +133,14 @@ const Post = ({ postContent }) => {
           {postContent?.desc}
         </p>
       </div>
+      {/* <iframe
+        className="p-0 px-3 mt-2"
+        style={{ borderRadius: "12px" }}
+        src={`https://open.spotify.com/embed/track/${"2Zw3HNjaNV42LnQ2uY5JQs"}?utm_source=generator`}
+        width="100%"
+        height="80"
+        loading="lazy"
+      ></iframe> */}
 
       {/* For Testing */}
       {postContent?.img !== "" ? (

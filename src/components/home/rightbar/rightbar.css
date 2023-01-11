@@ -24,7 +24,7 @@
 .rightbar-friend {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
   gap: 0px;
   padding: 12px 24px;
   cursor: pointer;
@@ -35,13 +35,24 @@
   transition: 0.1s ease;
 }
 
-/* .rightbar-col:hover,
-.rightbar-friend-col:hover {
-    background-color: rgba(110, 110, 110, 0.1);
-} */
+.fact-shuffle {
+  display: none;
+}
 
-/* 
-.rightbar-col:active,
-.rightbar-friend:active {
-    background-color: rgba(110, 110, 110, 0.2);
-} */
+.cat-fact-container:hover > .fact-shuffle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*w-75 to w-100 for better ui*/
+
+.w-75-to-100 {
+  width: 75%;
+}
+
+@media only screen and (max-width: 1000px) {
+  .w-75-to-100 {
+    width: 100%;
+  }
+}

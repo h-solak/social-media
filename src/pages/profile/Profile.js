@@ -16,24 +16,32 @@ import { FaBirthdayCake } from "react-icons/fa";
 import ChangeAvatar from "../../components/profile/ChangeAvatar";
 import moment from "moment";
 import PostLoader from "../../components/loaders/PostLoader";
+import { updateUser } from "../../redux/slices/authSlice";
 
 const Profile = ({ crrProfile, user, isOtherProfile, profileIsLoading }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { userUnfollowed } = useSelector((state) => state.users);
   const { username } = useParams();
   const [avatarModal, setAvatarModal] = useState(false);
   const [pickedAvatar, setPickedAvatar] = useState(0);
+
+  useEffect(() => {
+    if (userUnfollowed === username) {
+      dispatch(updateUser({ action: "unfollow", data: userUnfollowed }));
+    }
+    console.log(userUnfollowed);
+  }, [userUnfollowed]);
+
   return (
     <div className="w-100">
       <div className="profile-top flex-center flex-column">
         <img
-          src="https://images.pexels.com/photos/3078831/pexels-photo-3078831.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+          src="https://images.pexels.com/photos/45170/kittens-cat-cat-puppy-rush-45170.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
           alt="cover"
           className="w-100 pointer object-fit-cover"
           style={{
             maxHeight: "25vh",
-            backgroundPosition: "center",
-            backgroundSize: "contains",
           }}
         />
 
@@ -167,11 +175,41 @@ const Profile = ({ crrProfile, user, isOtherProfile, profileIsLoading }) => {
                 </Col>
               ) : null}
               {!profileIsLoading ? (
-                crrProfile?.posts?.map((post, index) => (
-                  <Col sm="12" className="p-0" key={index}>
-                    <Post postContent={post} />
-                  </Col>
-                ))
+                <>
+                  {crrProfile?.posts?.length > 0 ? (
+                    crrProfile?.posts?.map((post, index) => (
+                      <Col sm="12" className="p-0" key={index}>
+                        <Post postContent={post} />
+                      </Col>
+                    ))
+                  ) : (
+                    <Col sm="12" className="flex-center">
+                      <div className="flex-center flex-column">
+                        <img
+                          src={
+                            process.env.REACT_APP_PUBLIC_FOLDER +
+                            "/svg/notfoundcatfood.svg"
+                          }
+                          alt="user profile"
+                          width={120}
+                          height={120}
+                          className="rounded-2"
+                        />
+                        <p
+                          className="text-secondary fs-7 text-center fw-600"
+                          style={{ marginTop: "-15px" }}
+                        >
+                          This user hasn't shared anything yet <br />
+                          <span className="fs-7">
+                            (I have a bad{" "}
+                            <span className="fst-italic">feline</span> about
+                            this)
+                          </span>
+                        </p>
+                      </div>
+                    </Col>
+                  )}
+                </>
               ) : (
                 <PostLoader />
               )}

@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/sociablecat/static/css/main.29e03a1b.css",
+    "main.js": "/sociablecat/static/js/main.95bb6e9e.js",
+    "static/media/Montserrat-Bold.ttf": "/sociablecat/static/media/Montserrat-Bold.2c155811b35513d5beaa.ttf",
+    "index.html": "/sociablecat/index.html",
+    "main.29e03a1b.css.map": "/sociablecat/static/css/main.29e03a1b.css.map",
+    "main.95bb6e9e.js.map": "/sociablecat/static/js/main.95bb6e9e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.29e03a1b.css",
+    "static/js/main.95bb6e9e.js"
+  ]
+}

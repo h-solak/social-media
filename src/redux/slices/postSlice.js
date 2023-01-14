@@ -197,6 +197,27 @@ export const postSlice = createSlice({
     postIsSharing: false,
     postAuthError: false,
   },
+  reducers: {
+    updateTimelinePosts(state, action) {
+      switch (action.payload.action) {
+        case "like":
+          const index1 = state.timelinePosts.findIndex(
+            (post) => post._id === action.payload.postId
+          );
+          if (!state.timelinePosts[index1]?.likes.includes) {
+            state.timelinePosts[index1].likes.append(action.payload.username);
+          }
+        case "unlike":
+          const index2 = state.timelinePosts.findIndex(
+            (post) => post._id === action.payload.postId
+          );
+          if (!state.timelinePosts[index2]?.likes.includes) {
+            state.timelinePosts.filter((item, index) => index !== index2);
+          }
+      }
+    },
+  },
+
   extraReducers: (builder) => {
     builder.addCase(getTimelinePosts.fulfilled, (state, action) => {
       state.timelinePosts = action.payload?.data;
@@ -240,6 +261,6 @@ export const postSlice = createSlice({
   },
 });
 
-// export const { fetchUser } = userSlice.actions;
+export const { updateTimelinePosts } = postSlice.actions;
 
 export default postSlice.reducer;

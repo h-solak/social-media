@@ -4,6 +4,7 @@ import ChatUser from "./ChatUser";
 import "./messenger.css";
 import { IoChatbubblesSharp, IoPeople } from "react-icons/io5";
 import { MdEmojiPeople, MdLock } from "react-icons/md";
+import { TbArrowBackUp } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getChat } from "../../redux/slices/chatSlice";
@@ -21,12 +22,21 @@ const ChatUserList = ({ tab, setTab }) => {
           className="d-flex align-items-center justify-content-between px-4"
           style={{ height: "60px", backgroundColor: "#e1e1e1" }}
         >
-          <span className="fs-5 fw-bold">Messenger</span>
+          <div className="d-flex align-items-center gap-2">
+            <button
+              className={`p-0 ${tab === 0 ? "text-dark" : "text-secondary"}`}
+              onClick={() => navigate("/")}
+            >
+              <TbArrowBackUp className="fs-4" />
+            </button>
+            <span className="fs-5 fw-bold">Messenger</span>
+          </div>
           {/* <button className="p-0">
             <IoSettingsSharp style={{ fontSize: "18px" }} />
           </button> */}
           <div className="d-flex align-items-center gap-3">
             {/*  */}
+
             <button
               className={`p-0 ${tab === 0 ? "text-dark" : "text-secondary"}`}
               onClick={() => setTab(0)}
@@ -51,13 +61,15 @@ const ChatUserList = ({ tab, setTab }) => {
                 : null}
               <div className="flex-center border-bottom">
                 <button
-                  className="w-100 py-4 p-0 color-bronze default-hvr"
+                  className="w-100 py-4 px-2 flex-center color-bronze default-hvr"
                   onClick={() => setTab(1)}
                 >
-                  <MdEmojiPeople className="fs-5 me-1" />
-                  <span className="fs-8 fw-600">
-                    Choose people you follow and send a message
-                  </span>
+                  <p className="m-0">
+                    <MdEmojiPeople className="fs-5 me-1" />
+                    <span className="fs-8 fw-600">
+                      Choose people you follow and send a message
+                    </span>
+                  </p>
                 </button>
               </div>
               <p className="m-0 mt-5 py-5 fs-9 px-4 text-center text-secondary">

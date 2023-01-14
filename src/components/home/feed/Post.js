@@ -29,7 +29,11 @@ import toast from "react-hot-toast";
 import darkToast from "../../../helpers/darkToast";
 import { format } from "timeago.js";
 import { useSelector, useDispatch } from "react-redux";
-import { deletePost, likePost } from "../../../redux/slices/postSlice";
+import {
+  deletePost,
+  likePost,
+  updateTimelinePosts,
+} from "../../../redux/slices/postSlice";
 
 const Post = ({ postContent }) => {
   const navigate = useNavigate();
@@ -48,7 +52,7 @@ const Post = ({ postContent }) => {
   ];
   return (
     <div
-      className="share w-100 mb-5 bg-white shadow"
+      className={`share w-100 mb-5 bg-white shadow`}
       style={{ borderRadius: "12px 12px 12px 12px" }}
     >
       <div className="w-100 pt-2 px-3 d-flex align-items-start flex-column">
@@ -68,14 +72,21 @@ const Post = ({ postContent }) => {
             />
             <div className="d-flex align-items-start flex-column px-2">
               <p className="m-0 fs-7 fw-600 default">
-                <span className="fw-700">
+                <span
+                  className={`${
+                    postContent?.username === user?.username
+                      ? "fw-600 color-bronze"
+                      : "fw-600"
+                  }`}
+                >
                   {"@" + postContent?.username || "User"}
                 </span>
-                {user?._id !== postContent?.userId && (
-                  <button className="fs-8 fw-bold text-secondary hvr-underline">
-                    following
-                  </button>
-                )}
+                {/* {user?._id !== postContent?.userId &&
+                  !user?.followings?.includes(postContent?.username) && (
+                    <button className="ms-1 flex- fs-9 fw-600 bg-color-bronze rounded-1 text-white hvr-underline">
+                      follow
+                    </button>
+                  )} */}
               </p>
               <span className="fs-8 text-secondary default">
                 {format(postContent?.createdAt, "en_US")}
@@ -158,6 +169,15 @@ const Post = ({ postContent }) => {
               <button
                 className="flex-align-center gap-2 py-2 post-option pointer rounded-2"
                 onClick={() => {
+                  dispatch(
+                    updateTimelinePosts({
+                      action: postContent?.likes?.includes(user?.username)
+                        ? "unlike"
+                        : "like",
+                      postId: postContent?._id,
+                      username: user?.username,
+                    })
+                  );
                   dispatch(
                     likePost({
                       postId: postContent?._id,

@@ -38,3 +38,17 @@
     padding: 0px 32px;
   }
 }
+
+.mood-picker {
+  position: absolute;
+  margin-top: 270px;
+  /* From https://css.glass */
+  background: rgba(0, 0, 0, 0.9);
+}
+
+.mood {
+  background-color: transparent;
+}
+.mood:hover {
+  background-color: #414141;
+}

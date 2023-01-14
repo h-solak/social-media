@@ -38,7 +38,7 @@ const Index = () => {
         </Col>
       ) : (
         <Col
-          className="m-0 p-0 d-flex align-items-center justify-content-center"
+          className="m-0 p-0 d-none d-sm-flex align-items-center justify-content-center"
           sm="8"
           md="8"
         >

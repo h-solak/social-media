@@ -35,9 +35,10 @@ const Share = () => {
   const { postIsShared, postIsSharing } = useSelector((state) => state.post);
   const [isFocused, setIsFocused] = useState(false);
   const [postText, setPostText] = useState("");
-  const [musicModal, setMusicModal] = useState(false);
-  const [trackSearchText, setTrackSearchText] = useState("");
-  const [selectedTrackId, setSelectedTrackId] = useState("");
+  const [moodPicker, setMoodPicker] = useState(false);
+  // const [musicModal, setMusicModal] = useState(false);
+  // const [trackSearchText, setTrackSearchText] = useState("");
+  // const [selectedTrackId, setSelectedTrackId] = useState("");
 
   // const selectTrack = () => {
   //   const options = {
@@ -127,15 +128,36 @@ const Share = () => {
       <Row className="m-0 p-0">
         <Col md="12" className="p-0">
           <div className="flex-align-center justify-content-between px-0 ps-md-5 pe-md-4 pt-2 pb-2 w-100">
-            <div className="flex-align-center">
+            <div className="flex-align-center" style={{ position: "relative" }}>
               <button className="share-option-btn d-flex align-items-center justify-content-center gap-1 p-2 pointer rounded-2">
                 <MdPhotoLibrary className="fs-4" />
                 <span className="display-sm-md fs-7">Photo</span>
               </button>
-              <button className="share-option-btn d-flex align-items-center justify-content-center gap-1 p-2 pointer rounded-2">
+              <button
+                id="moodPickBtn"
+                className="share-option-btn d-flex align-items-center justify-content-center gap-1 p-2 pointer rounded-2"
+                // onClick={() => setMoodPicker(!moodPicker)}
+              >
                 <MdEmojiEmotions className="fs-4" />
-                <span className="display-sm-md fs-7">Emojis</span>
+                <span className="display-sm-md fs-7">Mood</span>
               </button>
+              {/* {moodPicker && (
+                <div className="mood-picker d-flex gap-2 flex-column pt-2 pb-0">
+                  <span className="text-white text-center">I feel...</span>
+                  <button className="mood m-0 d-flex align-items-center gap-2 text-white px-5 py-1">
+                    <span className="fs-5">&#128562;</span> shocked ah{" "}
+                  </button>
+                  <button className="mood m-0 d-flex align-items-center gap-2 text-white px-5 py-1">
+                    <span className="fs-5">&#129324;</span> angwy{" "}
+                  </button>
+                  <button className="mood m-0 d-flex align-items-center gap-2 text-white px-5 py-1">
+                    <span className="fs-5">&#129313;</span> clownish{" "}
+                  </button>
+                  <button className="mood m-0 d-flex align-items-center gap-2 text-white px-5 py-1">
+                    <span className="fs-5">&#128563;</span> flushed{" "}
+                  </button>
+                </div>
+              )} */}
               <button
                 className="share-option-btn d-flex align-items-center justify-content-center gap-1 p-2 pointer rounded-2"
                 // onClick={() => setMusicModal(true)}
@@ -144,6 +166,7 @@ const Share = () => {
                 <span className="display-sm-md fs-7">Music</span>
               </button>
             </div>
+
             {postText.length > 0 ? (
               <>
                 {postIsSharing ? (
